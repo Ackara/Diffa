@@ -259,3 +259,13 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# Approval Tests
+*.received.*
+
+# Generated Files
+[Ss]ample.cs
+
+# Sensitive Files
+[Cc]redentials.*
+[Ss]ecrets.*

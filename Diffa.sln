@@ -3,7 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diffa", "Diffa\Diffa.csproj", "{A04D15F0-FE95-4910-B6C9-0E25EEBDB6D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diffa", "src\Diffa\Diffa.csproj", "{A04D15F0-FE95-4910-B6C9-0E25EEBDB6D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diffa.MSTest", "tests\Diffa.MSTest\Diffa.MSTest.csproj", "{E756560F-16FF-4AFE-89DC-BEC88D82AE02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".misc", ".misc", "{9A05F26A-7C6F-4C7E-8AB3-BE219E0D85E1}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +22,10 @@ Global
 		{A04D15F0-FE95-4910-B6C9-0E25EEBDB6D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A04D15F0-FE95-4910-B6C9-0E25EEBDB6D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A04D15F0-FE95-4910-B6C9-0E25EEBDB6D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E756560F-16FF-4AFE-89DC-BEC88D82AE02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E756560F-16FF-4AFE-89DC-BEC88D82AE02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E756560F-16FF-4AFE-89DC-BEC88D82AE02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E756560F-16FF-4AFE-89DC-BEC88D82AE02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
