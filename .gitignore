@@ -265,6 +265,7 @@ __pycache__/
 
 # Generated Files
 [Ss]ample.cs
+[Tt]ools/
 
 # Sensitive Files
 [Cc]redentials.*
