@@ -1,8 +1,30 @@
-#Diffa
+# Diffa
 
 [![NuGet](https://img.shields.io/nuget/v/Acklann.Diffa.svg)](https://www.nuget.org/packages/Acklann.Diffa/)
 [![NuGet](https://img.shields.io/nuget/dt/Acklann.Diffa.svg)](https://www.nuget.org/packages/Acklann.Diffa/)
-![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
----
 
-Working Progres
+## What it is?
+
+Diffa is a **.netstandard** unit-test assertion library that allows you to verify your test results against approved files. Inspired by [ApprovalTests](https://github.com/approvals/ApprovalTests.Net), Diffa will also automatically launch your favorite diff tool when an assertion fails so you can compare approve the results.
+
+## Basic Use
+
+```c#
+[TestClass]
+[SaveFilesAt("Approved/")]
+[Use(typeof(VisualStudioReporter))]
+public class UnitTests
+{
+    [TestMethod]
+    public void Ensure_results_is_well_formed()
+    {
+        Diffa.Approve("This is my test results.");
+    }
+}
+```
+
+## Installation
+
+*Available at:*
+
+NUGET: `PM> Install-Package Acklann.Diffa`
