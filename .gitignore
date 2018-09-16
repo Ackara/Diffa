@@ -264,6 +264,7 @@ __pycache__/
 *.received.*
 
 # Generated Files
+*.[Dd]iffa.xml
 [Ss]ample.cs
 [Tt]ools/
 
