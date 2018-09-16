@@ -2,7 +2,7 @@
     "Version":  {
                     "Major":  0,
                     "Minor":  0,
-                    "Patch":  6
+                    "Patch":  7
                 },
     "Name":  "Diffa",
     "Author":  "Ackara",
@@ -17,5 +17,7 @@
     "BranchSuffixMap":  {
                             "master":  "",
                             "*":  "preview"
-                        }
+                        },
+    "Id":  "",
+    "Description":  ""
 }
