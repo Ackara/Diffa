@@ -4,14 +4,22 @@
     <AssemblyName>Acklann.Diffa</AssemblyName>
     <RootNamespace>Acklann.Diffa</RootNamespace>
     <LangVersion>7.2</LangVersion>
+    <PackageReleaseNotes><![CDATA[Version 0.0.1
+-------------
+Features:
+	* Compare any object
+	* Compare two files
+	* Supports Beyond compare 4
+	* Supports Visual Studio diff tool
+]]></PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <Title>Diffa</Title>
     <Authors>Ackara</Authors>
     <Company>Ackara</Company>
     <Copyright>MIT License</Copyright>
-    <PackageVersion>0.0.7</PackageVersion>
-    <AssemblyVersion>0.0.7</AssemblyVersion>
+    <PackageVersion>0.0.8</PackageVersion>
+    <AssemblyVersion>0.0.8</AssemblyVersion>
     <RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Ackara/Diffa/</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png</PackageIconUrl>
