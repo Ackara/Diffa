@@ -4,29 +4,19 @@
     <AssemblyName>Acklann.Diffa</AssemblyName>
     <RootNamespace>Acklann.Diffa</RootNamespace>
     <LangVersion>7.2</LangVersion>
-    <PackageReleaseNotes><![CDATA[Version 0.0.1
--------------
-Features:
-	* Compare any object
-	* Compare two files
-	* Supports Beyond compare 4
-	* Supports Visual Studio diff tool
-]]></PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <Title>Diffa</Title>
     <Authors>Ackara</Authors>
     <Company>Ackara</Company>
     <Copyright>MIT License</Copyright>
-    <PackageVersion>0.0.8</PackageVersion>
-    <AssemblyVersion>0.0.8</AssemblyVersion>
+    <PackageVersion>0.0.9</PackageVersion>
+    <AssemblyVersion>0.0.9</AssemblyVersion>
     <RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Ackara/Diffa/</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png</PackageIconUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Ackara/Traneleon/master/license.txt</PackageLicenseUrl>
     <Description><![CDATA[
-## What it is?
-
 Diffa is a **.netstandard** unit-test assertion library that allows you to verify your test results against approved files. Inspired by [ApprovalTests](https://github.com/approvals/ApprovalTests.Net), Diffa will also automatically launch your favorite diff tool when an assertion fails so you can compare approve the results.
 
 ## Basic Use
@@ -35,28 +25,30 @@ Diffa is a **.netstandard** unit-test assertion library that allows you to verif
 [SaveFilesAt("Approved/")]
 [Use(typeof(VisualStudioReporter))]
 public class UnitTests
-{
+
     [TestMethod]
     public void Ensure_results_is_well_formed()
-    {
-        Diffa.Approve("This is my test results.");
-    }
-}
-]]></Description>
+        => Diffa.Approve("This is my test results.");
+
+      ]]></Description>
+    <PackageReleaseNotes>Version 0.0.9
+-------------
+Features:
+	* Compare any object
+	* Compare two files
+	* Supports Beyond compare 4
+	* Supports Visual Studio diff tool
+</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>Acklann.Diffa.xml</DocumentationFile>
+    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="..\..\README.md">
       <Visible>false</Visible>
-      <PackagePath>./</PackagePath>
+      <PackagePath>
+      </PackagePath>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(AssemblyName).xml">
-      <Visible>false</Visible>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.1" />

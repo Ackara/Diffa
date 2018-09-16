@@ -2,7 +2,7 @@
     "Version":  {
                     "Major":  0,
                     "Minor":  0,
-                    "Patch":  8
+                    "Patch":  9
                 },
     "Name":  "Diffa",
     "Author":  "Ackara",
@@ -13,7 +13,7 @@
     "Icon":  "https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png",
     "License":  "https://raw.githubusercontent.com/Ackara/Traneleon/master/license.txt",
     "Summary":  "Diffa is a **.netstandard** unit-test assertion library that allows you to verify your test results against approved files.",
-    "ReleaseNotes":  "Version 0.0.1\r\n-------------\r\nFeatures:\r\n\t* Compare any object\r\n\t* Compare two files\r\n\t* Supports Beyond compare 4\r\n\t* Supports Visual Studio diff tool\r\n",
+    "ReleaseNotes":  "Version 0.0.9\r\n-------------\r\nFeatures:\r\n\t* Compare any object\r\n\t* Compare two files\r\n\t* Supports Beyond compare 4\r\n\t* Supports Visual Studio diff tool\r\n",
     "BranchSuffixMap":  {
                             "master":  "",
                             "*":  "preview"
