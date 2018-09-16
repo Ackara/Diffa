@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Acklann.Diffa</AssemblyName>
@@ -10,9 +10,9 @@
     <Authors>Ackara</Authors>
     <Company>Ackara</Company>
     <Copyright>MIT License</Copyright>
-    <PackageVersion>0.0.10</PackageVersion>
-    <AssemblyVersion>0.0.10</AssemblyVersion>
-    <PackageTags>approval test unit-testing diff compare</PackageTags>
+    <PackageVersion>0.0.11</PackageVersion>
+    <AssemblyVersion>0.0.11</AssemblyVersion>
+    <PackageTags>approval test unit-testing diff compare approvals verify testing</PackageTags>
     <RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Ackara/Diffa/</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png</PackageIconUrl>
@@ -32,8 +32,8 @@ public class UnitTests
       => Diffa.Approve("This is my test results.");
 
       ]]></Description>
-    <PackageReleaseNotes>Version 0.0.9
--------------
+    <PackageReleaseNotes>Version 0.0.10
+--------------
 Features:
 	* Compare any object
 	* Compare two files

@@ -1,24 +1,24 @@
 ﻿{
-  "Version":
-  {
-    "Major": 0,
-    "Minor": 0,
-    "Patch": 10
-  },
-  "Name": "Diffa",
-  "Author": "Ackara",
-  "Company": "Ackara",
-  "Copyright": "MIT License",
-  "Website": "https://github.com/Ackara/Diffa/",
-  "RepositoryUrl": "https://github.com/Ackara/Diffa.git",
-  "Icon": "https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png",
-  "License": "https://raw.githubusercontent.com/Ackara/Traneleon/master/license.txt",
-  "Summary": "Diffa is a **.netstandard** unit-test assertion library that allows you to verify your test results against approved files.",
-  "ReleaseNotes": "Version 0.0.9\r\n-------------\r\nFeatures:\r\n\t* Compare any object\r\n\t* Compare two files\r\n\t* Supports Beyond compare 4\r\n\t* Supports Visual Studio diff tool\r\n",
-  "Tags": "approval test unit-testing diff compare approvals verify testing",
-  "BranchSuffixMap":
-  {
-    "master": "",
-    "*": "preview"
-  }
+    "Version":  {
+                    "Major":  0,
+                    "Minor":  0,
+                    "Patch":  11
+                },
+    "Name":  "Diffa",
+    "Author":  "Ackara",
+    "Company":  "Ackara",
+    "Copyright":  "MIT License",
+    "Website":  "https://github.com/Ackara/Diffa/",
+    "RepositoryUrl":  "https://github.com/Ackara/Diffa.git",
+    "Icon":  "https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png",
+    "License":  "https://raw.githubusercontent.com/Ackara/Traneleon/master/license.txt",
+    "Summary":  "Diffa is a **.netstandard** unit-test assertion library that allows you to verify your test results against approved files.",
+    "ReleaseNotes":  "Version 0.0.10\r\n--------------\r\nFeatures:\r\n\t* Compare any object\r\n\t* Compare two files\r\n\t* Supports Beyond compare 4\r\n\t* Supports Visual Studio diff tool\r\n",
+    "Tags":  "approval test unit-testing diff compare approvals verify testing",
+    "BranchSuffixMap":  {
+                            "master":  "",
+                            "*":  "preview"
+                        },
+    "Id":  "",
+    "Description":  ""
 }
