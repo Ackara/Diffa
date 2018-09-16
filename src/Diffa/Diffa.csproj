@@ -4,14 +4,15 @@
     <AssemblyName>Acklann.Diffa</AssemblyName>
     <RootNamespace>Acklann.Diffa</RootNamespace>
     <LangVersion>7.2</LangVersion>
+    <PackageTags>approval test unit-testing diff compare</PackageTags>
   </PropertyGroup>
   <PropertyGroup>
     <Title>Diffa</Title>
     <Authors>Ackara</Authors>
     <Company>Ackara</Company>
     <Copyright>MIT License</Copyright>
-    <PackageVersion>0.0.9</PackageVersion>
-    <AssemblyVersion>0.0.9</AssemblyVersion>
+    <PackageVersion>0.0.10</PackageVersion>
+    <AssemblyVersion>0.0.10</AssemblyVersion>
     <RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Ackara/Diffa/</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png</PackageIconUrl>
