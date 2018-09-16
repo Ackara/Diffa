@@ -1,13 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Acklann.Diffa.Reporters
+﻿namespace Acklann.Diffa.Reporters
 {
+    /// <summary>
+    /// Represents a (diff) application that can compare two files.
+    /// </summary>
     public interface IReporter
     {
-        
+        /// <summary>
+        /// Determines whether this reporter is installed on the current machine.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this reporter is installed; otherwise, <c>false</c>.
+        /// </returns>
+        bool CanLaunch();
+
+        /// <summary>
+        /// Launches the reporter application to compare the specified files.
+        /// </summary>
+        /// <param name="resultFilePath">The result file path.</param>
+        /// <param name="approvedFilePath">The approved file path.</param>
+        void Launch(string resultFilePath, string approvedFilePath);
     }
 }

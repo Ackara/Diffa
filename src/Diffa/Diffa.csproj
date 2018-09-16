@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Acklann.Diffa</AssemblyName>
@@ -37,14 +37,18 @@ public class UnitTests
 ]]></Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>Acklann.Diffa.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="..\..\README.md">
       <Visible>false</Visible>
       <PackagePath>./</PackagePath>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(AssemblyName).xml">
+      <Visible>false</Visible>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.1" />

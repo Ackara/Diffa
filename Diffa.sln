@@ -10,7 +10,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".misc", ".misc", "{9A05F26A-7C6F-4C7E-8AB3-BE219E0D85E1}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		README.md = README.md
+		releaseNotes.txt = releaseNotes.txt
 	EndProjectSection
+EndProject
+Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "build", "build\build.pssproj", "{B7FE2AEA-9859-46F6-BBE0-CC933FF05FB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diffa.XUnit", "tests\Diffa.XUnit\Diffa.XUnit.csproj", "{11A1A26E-EF10-4733-9691-6E06F1209E38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +32,14 @@ Global
 		{E756560F-16FF-4AFE-89DC-BEC88D82AE02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E756560F-16FF-4AFE-89DC-BEC88D82AE02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E756560F-16FF-4AFE-89DC-BEC88D82AE02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7FE2AEA-9859-46F6-BBE0-CC933FF05FB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7FE2AEA-9859-46F6-BBE0-CC933FF05FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7FE2AEA-9859-46F6-BBE0-CC933FF05FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7FE2AEA-9859-46F6-BBE0-CC933FF05FB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11A1A26E-EF10-4733-9691-6E06F1209E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A1A26E-EF10-4733-9691-6E06F1209E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11A1A26E-EF10-4733-9691-6E06F1209E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11A1A26E-EF10-4733-9691-6E06F1209E38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

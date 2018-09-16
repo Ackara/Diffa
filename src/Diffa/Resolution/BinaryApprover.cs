@@ -1,37 +1,37 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace Acklann.Diffa.Resolution
 {
-    public class BinaryApprover : ApproverBase<Stream>
+    /// <summary>
+    /// Performs a byte-to-byte comparison between two files.
+    /// </summary>
+    /// <seealso cref="Resolution.ApproverBase{byte[]}" />
+    public class BinaryApprover : ApproverBase<byte[]>
     {
-        public BinaryApprover() : this(new StackTracePathResolver())
+        /// <summary>
+        /// Asserts that the serialized <paramref name="subject"/> equals the <paramref name="approvedFilePath"/> contents.
+        /// </summary>
+        /// <param name="fileContents">The file contents.</param>
+        /// <param name="resultFilePath">The result file path.</param>
+        /// <param name="approvedFilePath">The approved file path.</param>
+        /// <param name="reasonWhyItWasNotApproved">The reason why it was not approved.</param>
+        /// <returns></returns>
+        public override bool Approve(byte[] fileContents, string resultFilePath, string approvedFilePath, out string reasonWhyItWasNotApproved)
         {
-        }
+            CreateFileIfNotExist(approvedFilePath);
 
-        public BinaryApprover(IPathResolver resolver) : base(resolver)
-        {
-        }
-
-        public override bool Approve(Stream subject)
-        {
-            string e, a;
-
-            
-
-            throw new NotImplementedException();
-        }
-
-        public override void Report(Stream subject)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected bool Compare()
-        {
-            Stream a, b;
-
-            throw new System.NotImplementedException();
+            if (ByteArrayAreEqual(fileContents, File.ReadAllBytes(approvedFilePath)))
+            {
+                reasonWhyItWasNotApproved = string.Empty;
+                return true;
+            }
+            else
+            {
+                CreateFileIfNotExist(resultFilePath);
+                File.WriteAllBytes(resultFilePath, fileContents);
+                reasonWhyItWasNotApproved = $"The results do not match the approved file '{approvedFilePath}'.";
+                return false;
+            }
         }
     }
 }

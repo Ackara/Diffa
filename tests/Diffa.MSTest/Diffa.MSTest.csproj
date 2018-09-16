@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -11,8 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Tests\ApprovedResults\**" />
+    <EmbeddedResource Remove="Tests\ApprovedResults\**" />
+    <None Remove="Tests\ApprovedResults\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
-    <PackageReference Include="Moq" Version="4.10.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
@@ -24,13 +29,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Samples\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Sample.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Sample.cs</LastGenOutput>
+    </None>
+    <None Update="Samples\gifFile.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Samples\textFile.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Samples\xmlFile.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Samples\xmlSchema.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
@@ -45,5 +58,4 @@
       <DependentUpon>Sample.tt</DependentUpon>
     </Compile>
   </ItemGroup>
-
 </Project>
