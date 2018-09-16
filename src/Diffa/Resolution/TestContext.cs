@@ -26,6 +26,11 @@ namespace Acklann.Diffa.Resolution
         }
 
         /// <summary>
+        /// A null instance.
+        /// </summary>
+        public static readonly TestContext Empty = new TestContext();
+
+        /// <summary>
         /// The reporter attribute.
         /// </summary>
         public readonly UseAttribute ReporterAttribute;

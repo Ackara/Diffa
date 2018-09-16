@@ -28,7 +28,7 @@ Properties {
 	$Branch = "";
 }
 
-Task "Default" -depends @("restore", "compile", "test", "pack");
+Task "Default" -depends @("restore", "build", "test", "pack");
 
 #region ----- COMPILATION -----
 
@@ -92,7 +92,7 @@ Task "Run-Tests" -alias "test" -description "This task invoke all tests within t
 	{
         # Running all MSTest assemblies.
         Push-Location $RootDir;
-		foreach ($testFile in (Get-ChildItem "$RootDir/tests/*/bin/$Configuration" -Recurse -Filter "*Test*.dll"))
+		foreach ($testFile in (Get-ChildItem "$RootDir/tests/*/bin/$Configuration" -Recurse -Filter "*$SolutionName*Test*.dll"))
 		{
 			Write-Header "dotnet: vstest '$($testFile.BaseName)'";
 			Exec { &dotnet vstest $testFile.FullName; }
@@ -335,6 +335,20 @@ function Get-WAWSDeploy([string]$version="1.8.0")
 	}
 
     return $waws;
+}
+
+function Get-Nuget([string]$version = "latest")
+{
+	[string]$nuget = Join-Path $ToolsDir "Nuget/$version/nuget.exe";
+
+	if (-not (Test-Path $nuget))
+	{
+		$dir = Split-Path $nuget -Parent;
+		if (-not (Test-Path $dir)) { New-Item $dir -ItemType Directory | Out-Null; }
+		Invoke-WebRequest "https://dist.nuget.org/win-x86-commandline/$version/nuget.exe" -OutFile $nuget;
+	}
+
+	return $nuget;
 }
 
 function Get-Secret([Parameter(ValueFromPipeline)][string]$key, [string]$customMsg = "", [switch]$Assert)

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Acklann.Diffa</AssemblyName>
@@ -28,8 +28,8 @@ Diffa is a **.netstandard** unit-test assertion library that allows you to verif
 public class UnitTests
 
     [TestMethod]
-    public void Ensure_results_is_well_formed()
-        => Diffa.Approve("This is my test results.");
+    public void Ensure_results_is_well_formed() 
+      => Diffa.Approve("This is my test results.");
 
       ]]></Description>
     <PackageReleaseNotes>Version 0.0.9

@@ -2,16 +2,17 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Acklann.Diffa.Tests
 {
     [TestClass]
-    [SaveFilesAtAttribute("ClassLvl")]
+    [SaveFilesAt("ClassLvl")]
     public class ContextFileResolverTestA
     {
         [TestMethod]
-        [SaveFilesAtAttribute("MethodLvl")]
+        [SaveFilesAt("MethodLvl")]
         public void Should_return_path_honoring_the_attribute_on_the_method()
         {
             // Arrange
@@ -41,7 +42,7 @@ namespace Acklann.Diffa.Tests
 
         [DataTestMethod]
         [DataRow('a'), DataRow('b'), DataRow('c')]
-        [SaveFilesAtAttribute(nameof(DataTestMethodAttribute))]
+        [SaveFilesAt(nameof(DataTestMethodAttribute))]
         public void Should_return_path_honoring_the_parameters_on_the_method(char arg)
         {
             // Arrange
@@ -55,18 +56,19 @@ namespace Acklann.Diffa.Tests
             result.ShouldBe(expectedPath);
         }
 
-        //[TestMethod]
-        [SaveFilesAtAttribute("Async")]
-        /// TODO: Find a good soltuion for <see cref="ContextualFileResolver"/> to handle async methods.
+        [TestMethod]
+        [SaveFilesAt("Async")]
         public async Task Should_return_path_to_async_test()
         {
+            System.Diagnostics.Debug.WriteLine($"thread: '{Thread.CurrentThread.Name}'({Thread.CurrentThread.ManagedThreadId})");
+
             // Arrange
             var sut = new ContextualFileResolver();
             var expectedPath = Path.Combine(SampleFile.ProjectDirectory, nameof(Tests), "Async", $"{nameof(ContextFileResolverTestA)}-{nameof(Should_return_path_to_async_test)}.approved.txt");
 
             // Act
-            var result1 = sut.GetApprovedFilePath(".txt");
             await Task.Delay(100);
+            var result1 = sut.GetApprovedFilePath(".txt");
 
             // Assert
             result1.ShouldBe(expectedPath);

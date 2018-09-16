@@ -9,9 +9,11 @@ namespace Acklann.Diffa.Tests
     public class ReporterLaunchTest
     {
         [DataTestMethod]
+        [DataRow(typeof(NotepadPlusPlusReporter), true)]
         [DataRow(typeof(BeyondCompare4Reporter), true)]
         [DataRow(typeof(BeyondCompare4Reporter), true)]
         [DataRow(typeof(VisualStudioReporter), true)]
+        [DataRow(typeof(NullReporter), true)]
         public void Can_launch_all_reporters_installed_on_this_machine(Type reporterType, bool verifiedThatItLaunched /* because launching all reporters all at once is annoying. */)
         {
             var fileA = Path.ChangeExtension(Path.GetTempFileName(), ".txt");

@@ -1,0 +1,7 @@
+Version 0.0.9
+-------------
+Features:
+	* Compare any object
+	* Compare two files
+	* Supports Beyond compare 4
+	* Supports Visual Studio diff tool

@@ -3,7 +3,6 @@ using Acklann.Diffa.Reporters;
 using Acklann.Diffa.Resolution;
 using System;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Acklann.Diffa
@@ -15,7 +14,7 @@ namespace Acklann.Diffa
     {
         static Diff()
         {
-            foreach (string variable in new[] { "" })
+            foreach (string variable in new[] { "DISABLE_DIFFA_REPORTERS" })
                 try
                 {
                     if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable($"%{variable}%")) == false)
@@ -33,13 +32,13 @@ namespace Acklann.Diffa
         /// <param name="approver">The approver.</param>
         /// <param name="subject">The subject.</param>
         /// <param name="testParameters">The test parameters supplied by parameterized test.</param>
-        /// <param name="fileExtension">The file extension (with or without an dot).</param>
+        /// <param name="fileExtension">The file extension (with or without a dot).</param>
         /// <param name="reporter">The reporter.</param>
         /// <param name="fileResolver">The file resolver.</param>
-        /// <param name="contextBuilder">The context builder.</param>
-        public static void Approve(IApprover approver, object subject, object[] testParameters, string fileExtension = ".txt", IReporter reporter = default, IFileResolver fileResolver = default, IContextBuilder contextBuilder = default)
+        ///
+        public static void Approve(IApprover approver, object subject, object[] testParameters, string fileExtension = ".txt", IReporter reporter = default, IFileResolver fileResolver = default)
         {
-            if (contextBuilder == null) contextBuilder = new StackTraceContextBuilder();
+            var contextBuilder = new StackTraceParser();
             if (fileResolver == null) fileResolver = new ContextualFileResolver(contextBuilder);
 
             string resultFile = fileResolver.GetResultFilePath(fileExtension, testParameters);
@@ -71,33 +70,8 @@ namespace Acklann.Diffa
                     }
                 }
 
-                throw new ResultNotApprovedException(ExceptionMessage.ResultWasNotApproved(resultFile, approvedFile, reasonWhyItWasNotApproved));
+                throw new ResultNotApprovedException(ExceptionMessage.GetResultWasNotApproved(resultFile, approvedFile, reasonWhyItWasNotApproved));
             }
-        }
-
-        /// <summary>
-        /// Assert that the serialized <paramref name="subject"/> is equal to it's approved file. Only use this method with a test method that returns a <see cref="System.Threading.Tasks.Task"/> object.
-        /// </summary>
-        /// <param name="subject">The subject.</param>
-        /// <param name="fileExtension">The file extension (with or without an dot).</param>
-        /// <param name="resultFolder">The result folder.</param>
-        /// <param name="sourceFile">The source file.</param>
-        /// <param name="methodName">Name of the method.</param>
-        public static void ApproveFromAsync(object subject, string fileExtension = ".txt", string resultFolder = "", [CallerFilePath]string sourceFile = null, [CallerMemberName]string methodName = null)
-        {
-            // TODO: Find a better solution to handle async tests.
-            /// The <see cref="StackTraceContextBuilder"/> current implementation is unable to retrieve the source file of the async test methods.
-            /// Therefore I am using <see cref="System.Runtime.CompilerServices"/> as a workaround for now. This is a faulty solution because it requires
-            /// that this method must be called to directly from the test method to get the its named. I need to find a better solution.
-
-            var builder = new TestContextBuilder()
-            {
-                SourceFile = sourceFile,
-                SubDirectory = resultFolder,
-                TestMethodName = methodName,
-                TestClassName = Path.GetFileNameWithoutExtension(sourceFile),
-            };
-            Approve(new BinaryApprover(), Encoding.Default.GetBytes(subject.ToString()), new object[0], fileExtension, null, null, builder);
         }
 
         /* ========== */
@@ -106,21 +80,64 @@ namespace Acklann.Diffa
         /// Assert that the serialized <paramref name="subject"/> is equal to it's approved file.
         /// </summary>
         /// <param name="subject">The subject/test result.</param>
-        /// <param name="fileExtension">The file extension (with or without an dot).</param>
-        /// <param name="testParameters">The test parameters supplied by parameterized test.</param>
-        public static void Approve(object subject, string fileExtension = ".txt", params object[] testParameters)
+        /// <param name="fileExtension">The file extension (with or without a dot).</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void Approve(object subject, string fileExtension = ".txt", params object[] args)
         {
-            Approve(new BinaryApprover(), Encoding.Default.GetBytes(subject.ToString()), testParameters, fileExtension);
+            Approve(new BinaryApprover(), Encoding.Default.GetBytes(subject.ToString()), args, fileExtension);
+        }
+
+        /// <summary>
+        /// Assert that the <paramref name="resultFilePath"/> is equal to it's approved file.
+        /// </summary>
+        /// <param name="resultFilePath">The file path.</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void ApproveFile(string resultFilePath, params object[] args)
+        {
+            Approve(new BinaryApprover(), File.ReadAllBytes(resultFilePath), args, Path.GetExtension(resultFilePath));
+        }
+
+        /// <summary>
+        /// Assert that the document conforms to the specified XML-Schema (.xsd).
+        /// </summary>
+        /// <param name="xml">The XML stream.</param>
+        /// <param name="schemaFilePath">The URI that specifies the schema to load.</param>
+        /// <param name="targetNamespace">The schema targetNamespace property, or null to use the targetNamespace specified in the schema.</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void ApproveXml(Stream xml, string schemaFilePath, string targetNamespace, params object[] args)
+        {
+            if (File.Exists(schemaFilePath))
+            {
+                Approve(new XmlApprover(schemaFilePath, targetNamespace), xml, args, ".xml");
+            }
+            else throw new FileNotFoundException($"Could not find file '{schemaFilePath}'.", schemaFilePath);
+        }
+
+        /// <summary>
+        /// Assert that the document conforms to the specified XML-Schema (.xsd).
+        /// </summary>
+        /// <param name="xml">The XML text.</param>
+        /// <param name="schemaFilePath">The schema file path.</param>
+        /// <param name="targetNamespace">The target namespace.</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void ApproveXml(string xml, string schemaFilePath, string targetNamespace, params object[] args)
+        {
+            if (File.Exists(schemaFilePath))
+            {
+                Approve(new XmlApprover(schemaFilePath, targetNamespace), new MemoryStream(Encoding.UTF8.GetBytes(xml)), args, ".xml");
+            }
+            else throw new FileNotFoundException($"Could not find file '{schemaFilePath}'.", schemaFilePath);
         }
 
         /// <summary>
         /// Assert that the serialized <paramref name="subject"/> is equal to it's approved file.
         /// </summary>
-        /// <param name="filePath">The file path.</param>
-        /// <param name="testParameters">The test parameters supplied by parameterized test.</param>
-        public static void ApproveFile(string filePath, params object[] testParameters)
+        /// <param name="subject">The subject/test result.</param>
+        /// <param name="fileExtension">The file extension (with or without a dot).</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void ShouldMatchApprovedFile(this object subject, string fileExtension = ".txt", params object[] args)
         {
-            Approve(new BinaryApprover(), File.ReadAllBytes(filePath), testParameters, Path.GetExtension(filePath));
+            Approve(new BinaryApprover(), Encoding.Default.GetBytes(subject.ToString()), args, fileExtension);
         }
 
         #region Private Members

@@ -5,7 +5,7 @@ Properties {
 }
 
 Task "Deploy" -alias "publish" -description "This task compiles, test then publishes the solution." `
--depends @("restore", "version", "compile", "test", "pack", "push-nuget", "push-db", "push-web", "push-ps", "tag");
+-depends @("restore", "version", "build", "test", "pack", "push-nuget", "tag");
 
 Task "Configure-Project" -alias "configure" -description "This initializes the project." `
 -depends @("restore") -action {
@@ -23,10 +23,4 @@ Task "Package-Solution" -alias "pack" -description "This task generates all depl
 	Write-Header "dotnet: pack '$($proj.BaseName)'";
 	$version = Get-NcrementManifest $ManifestJson | Convert-NcrementVersionNumberToString $Branch -AppendSuffix;
 	Exec { &dotnet pack $proj.FullName --output $ArtifactsDir --configuration $Configuration /p:PackageVersion=$version; }
-
-	[string]$nupkg = Join-Path $ArtifactsDir "*.nupkg" | Resolve-Path;
-	$zip = [IO.Path]::ChangeExtension($nupkg, ".zip");
-	Copy-Item $nupkg -Destination $zip -Force;
-	Expand-Archive $zip -DestinationPath "$ArtifactsDir/msbuild-test";
-	Remove-Item $zip -Force;
 }

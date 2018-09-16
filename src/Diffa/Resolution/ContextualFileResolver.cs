@@ -11,7 +11,7 @@ namespace Acklann.Diffa.Resolution
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextualFileResolver"/> class.
         /// </summary>
-        public ContextualFileResolver() : this(new StackTraceContextBuilder())
+        public ContextualFileResolver() : this(new StackTraceParser())
         {
         }
 

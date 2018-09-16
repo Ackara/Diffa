@@ -5,11 +5,11 @@ namespace Acklann.Diffa.Resolution
     /// <summary>
     /// Performs a byte-to-byte comparison between two files.
     /// </summary>
-    /// <seealso cref="Resolution.ApproverBase{byte[]}" />
+    /// <seealso cref="ApproverBase{T}"/>
     public class BinaryApprover : ApproverBase<byte[]>
     {
         /// <summary>
-        /// Asserts that the serialized <paramref name="subject"/> equals the <paramref name="approvedFilePath"/> contents.
+        /// Asserts that the serialized <paramref name="fileContents"/> equals the <paramref name="approvedFilePath"/> contents.
         /// </summary>
         /// <param name="fileContents">The file contents.</param>
         /// <param name="resultFilePath">The result file path.</param>

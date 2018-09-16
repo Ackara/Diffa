@@ -4,24 +4,23 @@ using System.IO;
 namespace Acklann.Diffa.Reporters
 {
     /// <summary>
-    /// Represents Beyond Compare 4.
+    /// Represents notepad++.
     /// </summary>
-    /// <seealso cref="Acklann.Diffa.Reporters.ReporterBase" />
-    [Rank(Rating.PAID)]
-    public class BeyondCompare4Reporter : ReporterBase
+    /// <seealso cref="ReporterBase" />
+    public class NotepadPlusPlusReporter : ReporterBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BeyondCompare4Reporter"/> class.
+        /// Initializes a new instance of the <see cref="NotepadPlusPlusReporter"/> class.
         /// </summary>
-        public BeyondCompare4Reporter() : this(true)
+        public NotepadPlusPlusReporter() : base(GetExecutablePath(), "{0}", true)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BeyondCompare4Reporter"/> class.
+        /// Initializes a new instance of the <see cref="NotepadPlusPlusReporter"/> class.
         /// </summary>
         /// <param name="shouldPause">if set to <c>true</c> [should pause].</param>
-        public BeyondCompare4Reporter(bool shouldPause) : base(GetExecutablePath(), "\"{0}\" \"{1}\"", shouldPause)
+        public NotepadPlusPlusReporter(bool shouldPause) : base(GetExecutablePath(), "{0}", shouldPause)
         {
         }
 
@@ -38,7 +37,7 @@ namespace Acklann.Diffa.Reporters
                 {
                     default:
                     case PlatformID.Win32NT:
-                        _executablePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Beyond Compare 4", "BCompare.exe");
+                        _executablePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Notepad++", "notepad++.exe");
                         break;
 
                     case PlatformID.Unix:
