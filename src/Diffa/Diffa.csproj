@@ -47,8 +47,7 @@ Features:
   <ItemGroup>
     <Content Include="..\..\README.md">
       <Visible>false</Visible>
-      <PackagePath>
-      </PackagePath>
+      <PackagePath></PackagePath>
     </Content>
   </ItemGroup>
   <ItemGroup>
