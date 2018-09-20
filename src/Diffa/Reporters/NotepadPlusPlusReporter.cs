@@ -22,7 +22,7 @@ namespace Acklann.Diffa.Reporters
                 case PlatformID.Unix:
                 case PlatformID.MacOSX:
                     // TODO: Figure out where notepad++ is installed on mac and Linux.
-                    _exePath = "/snap/bin/notepad-plus-plus";
+                    //_exePath = "/snap/bin/notepad-plus-plus";
                     break;
             }
         }
