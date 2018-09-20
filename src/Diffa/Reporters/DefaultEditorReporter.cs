@@ -20,7 +20,7 @@ namespace Acklann.Diffa.Reporters
 
                 case System.PlatformID.Unix:
                 case System.PlatformID.MacOSX:
-                    _exePath = "gedit";
+                    _exePath = "/usr/bin/gedit";
                     break;
             }
         }
