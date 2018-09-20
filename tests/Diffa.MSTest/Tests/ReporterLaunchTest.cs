@@ -27,6 +27,7 @@ namespace Acklann.Diffa.Tests
             if (reporter.CanLaunch())
             {
                 if (verifiedThatItLaunched == false) reporter.Launch(fileA, fileB);
+                Console.WriteLine($"{reporterType.Name} is available on this machine.");
             }
             else
             {

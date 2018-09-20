@@ -28,7 +28,7 @@ namespace Acklann.Diffa.Tests
         [TestMethod]
         public void Can_approve_a_file()
         {
-            var sampleFile = Path.GetTempFileName();
+            var sampleFile = Path.Combine(Path.GetTempPath(), $"diffa-{nameof(Can_approve_an_object)}.txt");
             File.WriteAllText(sampleFile, "I want this file approved.");
 
             Diff.ApproveFile(sampleFile);
