@@ -2,6 +2,8 @@
 {
     internal static class ExceptionMessage
     {
+        // Should localize exception message.
+
         public static readonly string IssuesLink = "https://github.com/Ackara/Diffa/issues";
 
         public static string GetTestFrameworkNotSupported()
@@ -16,6 +18,11 @@
 
 ADDITIONAL INFORMATION:
 {reasonWhyFileWasRejected}";
+        }
+
+        public static string ReporterFailedToOpen(string reporterName, string executablePath, string args)
+        {
+            return $"Failed to open the {reporterName}; The following args were used filename:'{executablePath}' args:'{args}'";
         }
 
         public static string GetTestNotFoundMessage()

@@ -1,1 +1,1 @@
-﻿[assembly: Acklann.Diffa.SaveFilesAtAttribute(nameof(Acklann.Diffa))]
+﻿[assembly: Acklann.Diffa.SaveFilesAt(nameof(Acklann.Diffa))]

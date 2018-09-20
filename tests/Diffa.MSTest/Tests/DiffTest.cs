@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Acklann.Diffa.Tests
 {
     [TestClass]
-    [Use(typeof(BeyondCompare4Reporter))]
+    //[Use(typeof(DiffReporter))]
     [SaveFilesAt(ApprovedResults)]
     public class DiffTest
     {

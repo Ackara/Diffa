@@ -46,11 +46,18 @@ namespace Acklann.Diffa.Reporters
                 exe.StartInfo.FileName = _executablePath;
                 exe.StartInfo.Arguments = string.Format(_format, resultFilePath, approvedFilePath);
 
-                exe.Start();
-                if (_shouldPause)
+                try
                 {
-                    exe.WaitForExit();
-                    return true;
+                    exe.Start();
+                    if (_shouldPause)
+                    {
+                        exe.WaitForExit();
+                        return true;
+                    }
+                }
+                catch (System.InvalidOperationException ex)
+                {
+                    throw new System.ArgumentException(Exceptions.ExceptionMessage.ReporterFailedToOpen(GetType().Name, _executablePath, exe.StartInfo.Arguments), ex);
                 }
             }
 
