@@ -21,7 +21,7 @@ namespace Acklann.Diffa.Reporters
 
                 case PlatformID.Unix:
                 case PlatformID.MacOSX:
-                    // TODO: Figure out where beyond comparer is installed on mac and Linux.
+                    // TODO: Figure out where notepad++ is installed on mac and Linux.
                     _exePath = "snap/bin/notepad-plus-plus";
                     break;
             }

@@ -62,4 +62,6 @@
       <DependentUpon>Sample.tt</DependentUpon>
     </Compile>
   </ItemGroup>
+
+  <Import Project="..\..\src\Diffa\msbuild.targets" />
 </Project>

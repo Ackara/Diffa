@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <DiffaEmbedInfoOnBuild Condition="$(DiffaEmbedInfoOnBuild)==''">true</DiffaEmbedInfoOnBuild>
+    <DiffaProjectInfoFile>$(MSBuildProjectDirectory)\project-info.diffa.json</DiffaProjectInfoFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="$(DiffaProjectInfoFile)"
+                      Condition="Exists('$(DiffaProjectInfoFile)')">
+      <Visible>false</Visible>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <Target Name="EmbedProjectFileBeforBuild"
+          BeforeTargets="CoreBuild"
+          Condition="$(DiffaEmbedInfoOnBuild)">
+    <CallTarget Condition="!Exists('$(DiffaProjectInfoFile)')"
+                Targets="EmbedProjectInfo" />
+  </Target>
+
+  <Target Name="EmbedProjectInfo">
+    <!--  -->
+    <WriteLinesToFile File="$(DiffaProjectInfoFile)"
+                      Lines="{ &quot;directory&quot;: &quot;$(MSBuildProjectDirectory.Replace('\', '/'))&quot;, &quot;fileName&quot;: &quot;$(MSBuildProjectFile)&quot; }"
+                      Overwrite="true"
+                      Encoding="utf-8" />
+
+    <Message Text="Diffa: embeded '$(DiffaProjectInfoFile)' into your project." Importance="normal" />
+  </Target>
+</Project>

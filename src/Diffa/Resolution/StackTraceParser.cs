@@ -87,6 +87,12 @@ namespace Acklann.Diffa.Resolution
                 }
                 var reporter = (attr as UseAttribute);
 
+                if (string.IsNullOrEmpty(sourceFile))
+                {
+                    Debug.WriteLine($"The source file was not set.");
+                    Console.WriteLine($"The source file was not set.");
+                }
+
                 _context = context = new TestContext(member.Name, member.ReflectedType.Name, sourceFile, subDir, reporter);
                 return true;
             }

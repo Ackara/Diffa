@@ -1,11 +1,9 @@
 # Project-Specific tasks.
 
-Properties {
-	$MigrationDirectory = Join-Path $RootDir "src/*/*Migrations" | Resolve-Path;
-}
-
 Task "Deploy" -alias "publish" -description "This task compiles, test then publishes the solution." `
--depends @("restore", "version", "build", "test", "pack", "push-nuget", "tag");
+-depends @("configure", "version", "build", "test", "pack", "push-nuget", "tag");
+
+# ===============
 
 Task "Configure-Project" -alias "configure" -description "This initializes the project." `
 -depends @("restore") -action {

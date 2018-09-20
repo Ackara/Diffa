@@ -21,7 +21,7 @@ namespace <#= GetMSBuildProperty("//RootNamespace") #>
 	{
 		public const string FOLDER_NAME = "<#= FolderName #>";
 
-		public const string ProjectDirectory = @"<#= Host.ResolveAssemblyReference("$(ProjectDir)") #>";
+		public static readonly string ProjectDirectory = "";
 
 		public static string DirectoryName => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, FOLDER_NAME);
         
@@ -34,16 +34,6 @@ namespace <#= GetMSBuildProperty("//RootNamespace") #>
             return new DirectoryInfo(appDirectory).EnumerateFiles(searchPattern, SearchOption.AllDirectories)
                 .First(x => x.Name.Equals(fileName, StringComparison.CurrentCultureIgnoreCase));
         }
-
-        public static string GetContents(this string filePath)
-		{
-			return File.ReadAllText(filePath);
-		}
-
-		public static string GetContents(this FileInfo file)
-		{
-			return File.ReadAllText(file.FullName);
-		}
 
 		<# GenerateMethods(); #>
 	}

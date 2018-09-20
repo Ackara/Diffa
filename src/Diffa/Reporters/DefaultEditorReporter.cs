@@ -11,9 +11,6 @@ namespace Acklann.Diffa.Reporters
     {
         static DefaultEditorReporter()
         {
-            try { _exePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.System), "notepad.exe"); }
-            catch { }
-
             switch (System.Environment.OSVersion.Platform)
             {
                 default:

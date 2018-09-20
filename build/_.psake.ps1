@@ -28,7 +28,7 @@ Properties {
 	$Branch = "";
 }
 
-Task "Default" -depends @("restore", "build", "test", "pack");
+Task "Default" -depends @("configure", "build", "test", "pack");
 
 #region ----- COMPILATION -----
 

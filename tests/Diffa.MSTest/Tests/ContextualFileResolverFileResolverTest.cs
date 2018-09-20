@@ -100,4 +100,5 @@ namespace Acklann.Diffa.Tests
 
         private static string StaticFunc(ContextualFileResolver sut) => sut.GetApprovedFilePath(".txt");
     }
+
 }
