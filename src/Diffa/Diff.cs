@@ -48,24 +48,18 @@ namespace Acklann.Diffa
             {
                 if (_shouldReport ?? true)
                 {
-                    bool shouldCheckAgain = false;
                     if (reporter == null)
                     {
                         UseAttribute attribute = contextBuilder.Context.ReporterAttribute;
                         if (attribute?.Reporter == null)
-                        {
                             reporter = _reporterFactory.GetFirstAvailableReporter(true);
-                        }
                         else
-                        {
-                            shouldCheckAgain = attribute.ShouldPause;
                             reporter = (IReporter)Activator.CreateInstance(attribute.Reporter, args: attribute.ShouldPause);
-                        }
                     }
 
-                    reporter.Launch(resultFile, approvedFile);
-                    if (shouldCheckAgain)
+                    if (reporter.Launch(resultFile, approvedFile))
                     {
+                        // Checking the results again because the user may have updated the approved file if a diff reporter was launched.
                         if (approver.Approve(subject, resultFile, approvedFile, out reasonWhyItWasNotApproved)) return;
                     }
                 }

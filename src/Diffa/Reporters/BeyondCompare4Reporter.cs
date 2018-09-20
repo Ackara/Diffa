@@ -4,50 +4,41 @@ using System.IO;
 namespace Acklann.Diffa.Reporters
 {
     /// <summary>
-    /// Represents Beyond Compare 4.
+    /// Beyond Compare 4 launcher.
     /// </summary>
     /// <seealso cref="Acklann.Diffa.Reporters.ReporterBase" />
-    [Rank(Rating.PAID)]
+    [Traits(Kind.Diff, Rating.PAID_DIFF)]
     public class BeyondCompare4Reporter : ReporterBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BeyondCompare4Reporter"/> class.
-        /// </summary>
-        public BeyondCompare4Reporter() : this(true)
+        static BeyondCompare4Reporter()
         {
+            switch (Environment.OSVersion.Platform)
+            {
+                default:
+                case PlatformID.Win32NT:
+                    _exePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Beyond Compare 4", "BCompare.exe");
+                    break;
+
+                case PlatformID.Unix:
+                case PlatformID.MacOSX:
+                    _exePath = null;// TODO: Figure out where beyond comparer is installed on mac and Linux.
+                    break;
+            }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BeyondCompare4Reporter"/> class.
         /// </summary>
-        /// <param name="shouldPause">if set to <c>true</c> [should pause].</param>
-        public BeyondCompare4Reporter(bool shouldPause) : base(GetExecutablePath(), "\"{0}\" \"{1}\"", shouldPause)
-        {
-        }
-
-        private static string _executablePath;
+        public BeyondCompare4Reporter() : base(_exePath, "\"{0}\" \"{1}\"", true)
+        { }
 
         /// <summary>
-        /// Gets the executable path.
+        /// Initializes a new instance of the <see cref="BeyondCompare4Reporter"/> class.
         /// </summary>
-        /// <returns></returns>
-        public static string GetExecutablePath()
-        {
-            if (string.IsNullOrEmpty(_executablePath))
-                switch (Environment.OSVersion.Platform)
-                {
-                    default:
-                    case PlatformID.Win32NT:
-                        _executablePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Beyond Compare 4", "BCompare.exe");
-                        break;
+        /// <param name="shouldPause">if set to <c>true</c> the test will be paused until the application is closed.</param>
+        public BeyondCompare4Reporter(bool shouldPause) : base(_exePath, "\"{0}\" \"{1}\"", shouldPause)
+        { }
 
-                    case PlatformID.Unix:
-                    case PlatformID.MacOSX:
-                        _executablePath = null;// TODO: Figure out where beyond comparer is installed on mac and Linux.
-                        break;
-                }
-
-            return _executablePath;
-        }
+        private static string _exePath;
     }
 }

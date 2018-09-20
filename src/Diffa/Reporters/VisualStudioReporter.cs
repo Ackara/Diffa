@@ -7,10 +7,10 @@ using System.Runtime.InteropServices;
 namespace Acklann.Diffa.Reporters
 {
     /// <summary>
-    /// Represents Visual Studio's file (diff) comparison tool.
+    /// Visual Studio's file (diff) comparison tool.
     /// </summary>
     /// <seealso cref="Acklann.Diffa.Reporters.ReporterBase" />
-    [Rank(Rating.FREE - 1)]
+    [Traits(Kind.Diff, Rating.FREE_DIFF - 1)]
     public class VisualStudioReporter : ReporterBase
     {
         /// <summary>
@@ -28,7 +28,7 @@ namespace Acklann.Diffa.Reporters
         {
         }
 
-        private static string _executablePath;
+        private static string _exePath;
 
         #region code from ApprovalTests
 
@@ -37,7 +37,7 @@ namespace Acklann.Diffa.Reporters
 
         internal static string GetExecutablePath()
         {
-            if (string.IsNullOrEmpty(_executablePath))
+            if (string.IsNullOrEmpty(_exePath))
             {
                 Process process;
                 try
@@ -50,7 +50,7 @@ namespace Acklann.Diffa.Reporters
                 {
                     // Any exception means we are not working in this environment.
 
-                    return _executablePath = null;
+                    return _exePath = null;
                 }
 
                 if (process != null)
@@ -60,13 +60,13 @@ namespace Acklann.Diffa.Reporters
 
                     if (11 <= version)
                     {
-                        return _executablePath = processModule.FileName;
+                        return _exePath = processModule.FileName;
                     }
                 }
 
-                return _executablePath = null;
+                return _exePath = null;
             }
-            else return _executablePath;
+            else return _exePath;
         }
 
         private static class ParentProcessUtils

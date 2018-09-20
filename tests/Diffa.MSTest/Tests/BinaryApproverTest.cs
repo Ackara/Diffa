@@ -56,7 +56,6 @@ namespace Acklann.Diffa.Tests
             approved.ShouldBeFalse();
             resultFileExist.ShouldBeTrue();
             approvedFileExist.ShouldBeTrue();
-            reason.ShouldNotBeNullOrWhiteSpace();
         }
     }
 }

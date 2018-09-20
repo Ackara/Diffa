@@ -1,4 +1,10 @@
-Version 0.0.10
+version 0.1.0
+-------------
+Features:
+	* Add generic diff reporter
+	* Add generic file reporter
+
+version 0.0.10
 --------------
 Features:
 	* Compare any object

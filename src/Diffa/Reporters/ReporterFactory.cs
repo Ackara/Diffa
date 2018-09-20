@@ -16,32 +16,47 @@ namespace Acklann.Diffa.Reporters
                                     typeof(IReporter).IsAssignableFrom(t)
                                  select t);
 
+            TraitsAttribute traits;
             foreach (Type type in assemblyTypes)
             {
-                int? order = (type.GetCustomAttribute(typeof(RankAttribute)) as RankAttribute)?.Index;
-                _reporterTypes.Add(((order ?? 10), type));
+                traits = (type.GetCustomAttribute(typeof(TraitsAttribute)) as TraitsAttribute);
+
+                int order = (traits?.Index ?? -1);
+                Kind kind = (traits?.Kind ?? Kind.None);
+
+                _reporterTypes.Add((type, order, kind));
+            }
+        }
+
+        public IEnumerable<IReporter> GetReporters(bool shouldPause = true, Kind filter = Kind.None)
+        {
+            foreach ((Type type, int rating, Kind kind) in _reporterTypes.OrderByDescending(x => x.Item2))
+            {
+                if (filter != Kind.None && kind != filter) continue;
+
+                var reporter = (IReporter)Activator.CreateInstance(type, args: shouldPause);
+                if (reporter.CanLaunch())
+                {
+                    yield return reporter;
+                }
             }
         }
 
         public IReporter GetFirstAvailableReporter(bool shouldPause)
         {
             if (_firstReporter == null)
-                foreach ((int, Type Type) info in _reporterTypes.OrderByDescending(x => x.Item1))
+                foreach (IReporter reporter in GetReporters())
                 {
-                    var reporter = (IReporter)Activator.CreateInstance(info.Type, args: shouldPause);
-                    if (reporter.CanLaunch())
-                    {
-                        _firstReporter = reporter;
-                        break;
-                    }
+                    _firstReporter = reporter;
+                    break;
                 }
 
-            return _firstReporter;
+            return _firstReporter ?? new NullReporter();
         }
 
         #region Private Members
 
-        private readonly ICollection<(int, Type)> _reporterTypes = new List<(int, Type)>();
+        private readonly ICollection<(Type, int, Kind)> _reporterTypes = new List<(Type, int, Kind)>();
         private IReporter _firstReporter;
 
         #endregion Private Members

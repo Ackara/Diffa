@@ -15,7 +15,7 @@ namespace Acklann.Diffa.Reporters
         /// <param name="executablePath">The executable path.</param>
         /// <param name="argsFormat">The arguments format.</param>
         /// <param name="shouldPause">if set to <c>true</c> [should pause].</param>
-        public ReporterBase(string executablePath, string argsFormat, bool shouldPause)
+        protected ReporterBase(string executablePath, string argsFormat, bool shouldPause)
         {
             _format = argsFormat;
             _shouldPause = shouldPause;
@@ -38,25 +38,23 @@ namespace Acklann.Diffa.Reporters
         /// </summary>
         /// <param name="resultFilePath">The result file path.</param>
         /// <param name="approvedFilePath">The approved file path.</param>
-        /// <exception cref="System.Exception"></exception>
-        public virtual void Launch(string resultFilePath, string approvedFilePath)
+        /// <returns><c>true</c> if the application was launched (triggered an interrupt) <c>false</c> otherwise.</returns>
+        public virtual bool Launch(string resultFilePath, string approvedFilePath)
         {
-            string args = string.Format(_format, resultFilePath, approvedFilePath);
-            try
+            using (var exe = new Process())
             {
-                using (var exe = new Process())
-                {
-                    exe.StartInfo.Arguments = args;
-                    exe.StartInfo.FileName = _executablePath;
+                exe.StartInfo.FileName = _executablePath;
+                exe.StartInfo.Arguments = string.Format(_format, resultFilePath, approvedFilePath);
 
-                    exe.Start();
-                    if (_shouldPause) exe.WaitForExit();
+                exe.Start();
+                if (_shouldPause)
+                {
+                    exe.WaitForExit();
+                    return true;
                 }
             }
-            catch (System.SystemException ex)
-            {
-                throw new System.Exception($"Error occurred while not launching {GetType().Name} at {_executablePath} {args}", ex);
-            }
+
+            return false;
         }
 
         /// <summary>
@@ -65,15 +63,11 @@ namespace Acklann.Diffa.Reporters
         /// <returns>
         /// A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return _executablePath;
-        }
+        public override string ToString() => _executablePath;
 
         #region Private Members
 
-        private readonly string _format;
-        private readonly string _executablePath;
+        internal readonly string _format, _executablePath;
         private readonly bool _shouldPause;
 
         #endregion Private Members

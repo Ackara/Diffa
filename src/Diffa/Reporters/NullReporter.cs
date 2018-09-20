@@ -34,8 +34,10 @@
         /// </summary>
         /// <param name="resultFilePath">The result file path.</param>
         /// <param name="approvedFilePath">The approved file path.</param>
-        public void Launch(string resultFilePath, string approvedFilePath)
+        public bool Launch(string resultFilePath, string approvedFilePath)
         {
+            System.Console.WriteLine($"None of the known reporters are currently available on this machine.");
+            return false;
         }
     }
 }

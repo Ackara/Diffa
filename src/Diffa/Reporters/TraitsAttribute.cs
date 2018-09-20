@@ -2,20 +2,16 @@
 
 namespace Acklann.Diffa.Reporters
 {
-    internal static class Rating
-    {
-        public const sbyte PAID = 3;
-        public const sbyte FREE = 2;
-    }
-
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    internal sealed class RankAttribute : Attribute
+    internal sealed class TraitsAttribute : Attribute
     {
-        public RankAttribute(int index)
+        public TraitsAttribute(Kind kind, int index)
         {
+            Kind = kind;
             Index = index;
         }
 
         public readonly int Index;
+        public readonly Kind Kind;
     }
 }

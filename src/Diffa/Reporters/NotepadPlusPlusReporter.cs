@@ -4,49 +4,43 @@ using System.IO;
 namespace Acklann.Diffa.Reporters
 {
     /// <summary>
-    /// Represents notepad++.
+    /// Notepad++ launcher.
     /// </summary>
     /// <seealso cref="ReporterBase" />
+    [Traits(Kind.Editor, Rating.FREE_EDITOR)]
     public class NotepadPlusPlusReporter : ReporterBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotepadPlusPlusReporter"/> class.
-        /// </summary>
-        public NotepadPlusPlusReporter() : base(GetExecutablePath(), "{0}", true)
+        static NotepadPlusPlusReporter()
         {
+            switch (Environment.OSVersion.Platform)
+            {
+                default:
+                case PlatformID.Win32NT:
+                    _exePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Notepad++", "notepad++.exe");
+                    break;
+
+                case PlatformID.Unix:
+                case PlatformID.MacOSX:
+                    _exePath = null;// TODO: Figure out where beyond comparer is installed on mac and Linux.
+                    break;
+            }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotepadPlusPlusReporter"/> class.
         /// </summary>
-        /// <param name="shouldPause">if set to <c>true</c> [should pause].</param>
-        public NotepadPlusPlusReporter(bool shouldPause) : base(GetExecutablePath(), "{0}", shouldPause)
+        public NotepadPlusPlusReporter() : base(_exePath, "{0}", false)
         {
         }
-
-        private static string _executablePath;
 
         /// <summary>
-        /// Gets the executable path.
+        /// Initializes a new instance of the <see cref="NotepadPlusPlusReporter"/> class.
         /// </summary>
-        /// <returns></returns>
-        public static string GetExecutablePath()
+        /// <param name="shouldPause">if set to <c>true</c> the test will be paused until the application is closed.</param>
+        public NotepadPlusPlusReporter(bool shouldPause) : base(_exePath, "{0}", false)
         {
-            if (string.IsNullOrEmpty(_executablePath))
-                switch (Environment.OSVersion.Platform)
-                {
-                    default:
-                    case PlatformID.Win32NT:
-                        _executablePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Notepad++", "notepad++.exe");
-                        break;
-
-                    case PlatformID.Unix:
-                    case PlatformID.MacOSX:
-                        _executablePath = null;// TODO: Figure out where beyond comparer is installed on mac and Linux.
-                        break;
-                }
-
-            return _executablePath;
         }
+
+        private static string _exePath;
     }
 }

@@ -18,6 +18,6 @@
         /// </summary>
         /// <param name="resultFilePath">The result file path.</param>
         /// <param name="approvedFilePath">The approved file path.</param>
-        void Launch(string resultFilePath, string approvedFilePath);
+        bool Launch(string resultFilePath, string approvedFilePath);
     }
 }

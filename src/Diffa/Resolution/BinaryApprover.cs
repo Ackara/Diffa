@@ -19,17 +19,16 @@ namespace Acklann.Diffa.Resolution
         public override bool Approve(byte[] fileContents, string resultFilePath, string approvedFilePath, out string reasonWhyItWasNotApproved)
         {
             CreateFileIfNotExist(approvedFilePath);
+            reasonWhyItWasNotApproved = string.Empty;
 
             if (ByteArrayAreEqual(fileContents, File.ReadAllBytes(approvedFilePath)))
             {
-                reasonWhyItWasNotApproved = string.Empty;
                 return true;
             }
             else
             {
                 CreateFileIfNotExist(resultFilePath);
                 File.WriteAllBytes(resultFilePath, fileContents);
-                reasonWhyItWasNotApproved = $"The results do not match the approved file '{approvedFilePath}'.";
                 return false;
             }
         }
