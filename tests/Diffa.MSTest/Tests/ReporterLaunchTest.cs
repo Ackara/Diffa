@@ -12,8 +12,8 @@ namespace Acklann.Diffa.Tests
         [DataRow(typeof(NullReporter), true)]
         [DataRow(typeof(FileReporter), true)]
         [DataRow(typeof(DiffReporter), true)]
-        [DataRow(typeof(NotepadReporter), true)]
         [DataRow(typeof(VisualStudioReporter), true)]
+        [DataRow(typeof(DefaultEditorReporter), true)]
         [DataRow(typeof(BeyondCompare4Reporter), true)]
         [DataRow(typeof(NotepadPlusPlusReporter), true)]
         public void Can_launch_all_reporters_installed_on_this_machine(Type reporterType, bool verifiedThatItLaunched /* because launching all reporters all at once is annoying. */)
