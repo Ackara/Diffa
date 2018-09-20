@@ -28,3 +28,5 @@ public class UnitTests
 *Available at:*
 
 NUGET: `PM> Install-Package Acklann.Diffa`
+
+## Contributing
