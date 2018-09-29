@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Acklann.Diffa</AssemblyName>
@@ -10,8 +10,8 @@
     <Authors>Ackara</Authors>
     <Company>Ackara</Company>
     <Copyright>MIT License</Copyright>
-    <PackageVersion>0.1.1</PackageVersion>
-    <AssemblyVersion>0.1.1</AssemblyVersion>
+    <PackageVersion>0.1.2</PackageVersion>
+    <AssemblyVersion>0.1.2</AssemblyVersion>
     <PackageTags>approval test unit-testing diff compare approvals verify testing</PackageTags>
     <RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Ackara/Diffa/</PackageProjectUrl>
@@ -32,7 +32,12 @@ public class UnitTests
       => Diff.Approve("This is my test results.");
 
       ]]></Description>
-    <PackageReleaseNotes>version 0.1.0
+    <PackageReleaseNotes>version 0.2.0
+-------------
+Features:
+	* Add ApproveJson method.
+
+version 0.1.0
 -------------
 Features:
 	* Add generic diff reporter
