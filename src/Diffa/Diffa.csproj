@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Acklann.Diffa</AssemblyName>
@@ -18,13 +18,13 @@
     <PackageIconUrl>https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png</PackageIconUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Ackara/Traneleon/master/license.txt</PackageLicenseUrl>
     <Description><![CDATA[
-Diffa is a **.netstandard** unit-test assertion library that allows you to verify your test results against approved files. Inspired by [ApprovalTests](https://github.com/approvals/ApprovalTests.Net), Diffa will also automatically launch your favorite diff tool when an assertion fails so you can compare approve the results.
+Diffa is a .netstandard unit-test assertion library that allows you to verify your test results against approved files. Inspired by [ApprovalTests](https://github.com/approvals/ApprovalTests.Net), Diffa will also automatically launch your favorite diff tool when an assertion fails so you can compare approve the results.
 
 ## Basic Use
 
 [TestClass]
 [SaveFilesAt("Approved/")]
-[Use(typeof(VisualStudioReporter))]
+[Use(typeof(DiffReporter))]
 public class UnitTests
 
     [TestMethod]

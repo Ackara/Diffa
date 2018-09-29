@@ -4,6 +4,8 @@ using Acklann.Diffa.Resolution;
 using System;
 using System.IO;
 using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Acklann.Diffa
 {
@@ -92,6 +94,61 @@ namespace Acklann.Diffa
         }
 
         /// <summary>
+        /// Assert that the JSON text is equal to it's approved file.
+        /// </summary>
+        /// <param name="json">The json text.</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void ApproveJson(string json, params object[] args)
+        {
+            Approve(new BinaryApprover(), Encoding.UTF8.GetBytes(json), args, ".json");
+        }
+
+        /// <summary>
+        /// Assert that the serialized <paramref name="subject"/> is equal to it's approved file.
+        /// </summary>
+        /// <param name="subject">The subject/test result.</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void ApproveJson(object subject, params object[] args)
+        {
+            byte[] data = null;
+
+            using (var stream = new MemoryStream())
+            using (var writer = System.Runtime.Serialization.Json.JsonReaderWriterFactory.CreateJsonWriter(stream, Encoding.UTF8, false, indent: true))
+            {
+                var serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(subject.GetType(), new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings() { UseSimpleDictionaryFormat = true, DateTimeFormat = new System.Runtime.Serialization.DateTimeFormat("yyyy-MM-dd hh:mm:ss.fff tt") });
+
+                serializer.WriteObject(writer, subject);
+                writer.Flush();
+                data = stream.ToArray();
+            }
+
+            Approve(new BinaryApprover(), data, args, ".json");
+        }
+
+        /// <summary>
+        /// Assert that the document conforms to the specified XML-Schema (.xsd).
+        /// </summary>
+        /// <param name="subject">The subject.</param>
+        /// <param name="schemaFilePath">The schema file path.</param>
+        /// <param name="targetNamespace">The target namespace.</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void ApproveXml(object subject, string schemaFilePath, string targetNamespace, params object[] args)
+        {
+            if (File.Exists(schemaFilePath))
+            {
+                using (var stream = new MemoryStream())
+                {
+                    var serializer = new XmlSerializer(subject.GetType());
+                    serializer.Serialize(stream, subject, new XmlSerializerNamespaces(new XmlQualifiedName[] { new XmlQualifiedName(string.Empty, targetNamespace) }));
+                    stream.Position = 0;
+
+                    Approve(new XmlApprover(schemaFilePath, targetNamespace), stream, args, ".xml");
+                }
+            }
+            else throw new FileNotFoundException(ExceptionMessage.FileNotFound(schemaFilePath), schemaFilePath);
+        }
+
+        /// <summary>
         /// Assert that the document conforms to the specified XML-Schema (.xsd).
         /// </summary>
         /// <param name="xml">The XML stream.</param>
@@ -104,7 +161,7 @@ namespace Acklann.Diffa
             {
                 Approve(new XmlApprover(schemaFilePath, targetNamespace), xml, args, ".xml");
             }
-            else throw new FileNotFoundException($"Could not find file '{schemaFilePath}'.", schemaFilePath);
+            else throw new FileNotFoundException(ExceptionMessage.FileNotFound(schemaFilePath), schemaFilePath);
         }
 
         /// <summary>

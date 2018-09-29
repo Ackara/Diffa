@@ -1,6 +1,7 @@
 ﻿using Acklann.Diffa.Reporters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -11,7 +12,9 @@ namespace Acklann.Diffa.Tests
     [SaveFilesAt(ApprovedResults)]
     public class DiffTest
     {
-        private const string ApprovedResults = "ApprovedResults";
+        private const string
+            ApprovedResults = "ApprovedResults",
+            Xmlns = "http://tempuri.org/sample.xsd";
 
         [TestMethod]
         public void Can_approve_an_object()
@@ -69,13 +72,35 @@ namespace Acklann.Diffa.Tests
             var sampleFile = SampleFile.GetXmlfile();
             var invaildFile = SampleFile.GetInvalid_Xmlfile();
 
-            Diff.ApproveXml(sampleFile.OpenRead(), schemaFile, "http://tempuri.org/sample.xsd");
-            Diff.ApproveXml(File.ReadAllText(sampleFile.FullName), schemaFile, "http://tempuri.org/sample.xsd");
+            Diff.ApproveXml(sampleFile.OpenRead(), schemaFile, Xmlns);
+            Diff.ApproveXml(File.ReadAllText(sampleFile.FullName), schemaFile, Xmlns);
 
             Should.Throw<Exceptions.ResultNotApprovedException>(() =>
             {
-                Diff.ApproveXml(invaildFile.OpenRead(), schemaFile, "http://tempuri.org/sample.xsd");
+                Diff.ApproveXml(invaildFile.OpenRead(), schemaFile, Xmlns);
             });
+        }
+
+        [TestMethod]
+        public void Can_serialize_object_to_json()
+        {
+            Diff.ApproveJson(new Fakes.Album()
+            {
+                Length = 64,
+                Name = "What a time to be alive",
+                RelaseDate = new DateTime(2015, 09, 05),
+                Artists = new string[] { "Drake", "Future" }
+            });
+        }
+
+        [TestMethod]
+        public void Can_serialize_object_to_xml()
+        {
+            Diff.ApproveXml(new Fakes.Person()
+            {
+                Age = 28,
+                Name = "Mary Jane"
+            }, SampleFile.GetXmlschema().FullName, Xmlns);
         }
     }
 }

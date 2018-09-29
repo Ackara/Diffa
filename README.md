@@ -5,14 +5,14 @@
 
 ## What it is?
 
-Diffa is a **.netstandard** unit-test assertion library that allows you to verify your test results against approved files. Inspired by [ApprovalTests](https://github.com/approvals/ApprovalTests.Net), Diffa will also automatically launch your favorite diff tool when an assertion fails so you can compare approve the results.
+Diffa is a unit-test assertion library that allows you to verify your test results against approved files. Inspired by [ApprovalTests](https://github.com/approvals/ApprovalTests.Net), Diffa will also automatically launch your favorite diff tool when an assertion fails so you can compare approve the results.
 
 ## Basic Use
 
 ```c#
 [TestClass]
-[SaveFilesAt("Approved/")]
-[Use(typeof(VisualStudioReporter))]
+[Use(typeof(DiffReporter))]
+[SaveFilesAt("approved-results/")]
 public class UnitTests
 {
     [TestMethod]

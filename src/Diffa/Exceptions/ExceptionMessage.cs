@@ -25,6 +25,11 @@ ADDITIONAL INFORMATION:
             return $"Failed to open the {reporterName}; The following args were used filename:'{executablePath}' args:'{args}'";
         }
 
+        public static string FileNotFound(string filename)
+        {
+            return string.Format("Could not find file '{0}'.", filename);
+        }
+
         public static string GetTestNotFoundMessage()
         {
             string supportedFrameworks = string.Join(", ", Resolution.KnownTestFramework.Names);
