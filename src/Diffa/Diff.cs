@@ -63,7 +63,7 @@ namespace Acklann.Diffa
 
                     if (reporter.Launch(resultFile, approvedFile))
                     {
-                        // Checking the results again because the user may have updated the approved file if a diff reporter was launched.
+                        // Checking the results again because the user may have updated the approved file when the reporter was launched.
                         if (approver.Approve(subject, resultFile, approvedFile, out reasonWhyItWasNotApproved)) return;
                     }
                 }
@@ -72,7 +72,7 @@ namespace Acklann.Diffa
             }
         }
 
-        /* ========== */
+        // ========== //
 
         /// <summary>
         /// Assert that the serialized <paramref name="subject"/> is equal to it's approved file.

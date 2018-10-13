@@ -1,8 +1,10 @@
-﻿namespace Acklann.Diffa.Exceptions
+﻿using System.IO;
+
+namespace Acklann.Diffa.Exceptions
 {
     internal static class ExceptionMessage
     {
-        // Should localize exception message.
+        //TODO: Should localize exception messages.
 
         public static readonly string IssuesLink = "https://github.com/Ackara/Diffa/issues";
 
@@ -14,15 +16,32 @@
 
         public static string GetResultWasNotApproved(string resultFilePath, string approvedFilePath, string reasonWhyFileWasRejected)
         {
-            return $@"{resultFilePath} is not the same as {approvedFilePath}
+            string more_info = string.IsNullOrEmpty(reasonWhyFileWasRejected) ? string.Empty : $"Additional Information:\r\n{reasonWhyFileWasRejected}\r\n";
 
-ADDITIONAL INFORMATION:
-{reasonWhyFileWasRejected}";
+            return $@"
+{Path.GetFileName(resultFilePath)} contents is not the same as {Path.GetFileName(approvedFilePath)}
+{more_info}
+Solution:
+{copyCommand()}
+".TrimEnd();
+
+            string copyCommand()
+            {
+                switch (System.Environment.OSVersion.Platform)
+                {
+                    default:
+                    case System.PlatformID.Win32NT:
+                        return $"cmd /c move /Y \"{resultFilePath}\" \"{approvedFilePath}\"";
+
+                    case System.PlatformID.Unix:
+                        return $"cp '{resultFilePath}' '{approvedFilePath}'";
+                }
+            }
         }
 
         public static string ReporterFailedToOpen(string reporterName, string executablePath, string args)
         {
-            return $"Failed to open the {reporterName}; The following args were used filename:'{executablePath}' args:'{args}'";
+            return $"Failed to open the {reporterName}; The following arguments were used filename:'{executablePath}' arguments:'{args}'";
         }
 
         public static string FileNotFound(string filename)

@@ -15,6 +15,7 @@ namespace Acklann.Diffa.Exceptions
         /// <param name="message">The message that describes the error.</param>
         public ResultNotApprovedException(string message) : base(message)
         {
+            HelpLink = ExceptionMessage.IssuesLink;
         }
 
         /// <summary>
@@ -24,6 +25,7 @@ namespace Acklann.Diffa.Exceptions
         /// <param name="inner">The inner.</param>
         public ResultNotApprovedException(string message, Exception inner) : base(message, inner)
         {
+            HelpLink = ExceptionMessage.IssuesLink;
         }
     }
 }
