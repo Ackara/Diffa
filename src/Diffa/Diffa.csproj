@@ -10,8 +10,8 @@
     <Authors>Ackara</Authors>
     <Company>Ackara</Company>
     <Copyright>MIT License</Copyright>
-    <PackageVersion>0.1.3</PackageVersion>
-    <AssemblyVersion>0.1.3</AssemblyVersion>
+    <PackageVersion>0.1.4</PackageVersion>
+    <AssemblyVersion>0.1.4</AssemblyVersion>
     <PackageTags>approval test unit-testing diff compare approvals verify testing</PackageTags>
     <RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Ackara/Diffa/</PackageProjectUrl>
