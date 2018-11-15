@@ -2,6 +2,7 @@
 using Acklann.Diffa.Reporters;
 using Acklann.Diffa.Resolution;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -191,6 +192,24 @@ namespace Acklann.Diffa
         public static void ShouldMatchApprovedFile(this object subject, string fileExtension = ".txt", params object[] args)
         {
             Approve(new BinaryApprover(), Encoding.Default.GetBytes(subject.ToString()), args, fileExtension);
+        }
+
+        /// <summary>
+        /// Assert that the serialized <paramref name="subject"/> is equal to it's approved file.
+        /// </summary>
+        /// <param name="subject">The subject/test result.</param>
+        /// <param name="fileExtension">The file extension (with or without a dot).</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void ApproveAll(IEnumerable<object> subjects, string fileExtension = ".txt", params object[] args)
+        {
+            int index = 0;
+            var content = new StringBuilder();
+            foreach (var item in subjects)
+            {
+                content.AppendLine($"[{index++}] => {item.ToString()}");
+            }
+
+            Approve(new BinaryApprover(), Encoding.Default.GetBytes(content.ToString()), args, fileExtension);
         }
 
         #region Private Members

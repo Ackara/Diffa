@@ -102,5 +102,12 @@ namespace Acklann.Diffa.Tests
                 Name = "Mary Jane"
             }, SampleFile.GetXmlschema().FullName, Xmlns);
         }
+
+        [TestMethod]
+        public void Can_approve_a_list()
+        {
+            var sample = new string[] { "dog", "cat", "rat" };
+            Diff.ApproveAll(sample);
+        }
     }
 }
