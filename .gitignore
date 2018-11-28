@@ -264,7 +264,8 @@ __pycache__/
 *.received.*
 
 # Generated Files
-project-info.*
+[Ss]ample.cs
+diffa-*.*
 [Tt]ools/
 
 # Sensitive Files
