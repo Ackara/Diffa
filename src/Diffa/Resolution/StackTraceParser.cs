@@ -1,6 +1,7 @@
 ﻿using Acklann.Diffa.Reporters;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -9,6 +10,10 @@ namespace Acklann.Diffa.Resolution
 {
     internal class StackTraceParser : IContextBuilder
     {
+        static StackTraceParser()
+        {
+        }
+
         public StackTraceParser()
         {
             foreach (string typeName in KnownTestFramework.TestMethodAttributeNames)
@@ -41,7 +46,7 @@ namespace Acklann.Diffa.Resolution
                 if (caller.ReflectedType.IsNested && !string.IsNullOrEmpty(temp)) asyncWrapper = caller.ReflectedType;
 #if DEBUG
                 System.Diagnostics.Debug.WriteLine($"{caller.ReflectedType.Name} => {caller.Name} | async:{caller.ReflectedType.IsNested}");
-                System.Diagnostics.Debug.WriteLine($"at '{frame.GetFileName()}'");
+                System.Diagnostics.Debug.WriteLine($"at '{temp}'");
                 System.Diagnostics.Debug.WriteLine("");
 #endif
                 if (TryParse(caller, sourceFile, out context)) return context;
@@ -61,44 +66,69 @@ namespace Acklann.Diffa.Resolution
             throw new TargetException(Exceptions.ExceptionMessage.GetTestNotFoundMessage()) { HelpLink = Exceptions.ExceptionMessage.IssuesLink };
         }
 
-        internal bool TryParse(MemberInfo member, string sourceFile, out TestContext context)
+        public bool TryParse(MemberInfo member, string sourceFile, out TestContext context)
         {
             if (member.IsDefined(_testMethodAttribute))
             {
-                Attribute attr = member.GetCustomAttribute(typeof(SaveFilesAtAttribute));
+                Attribute attr = member.GetCustomAttribute(typeof(ApprovedFolderAttribute));
                 if (attr == null)
                 {
-                    attr = member.ReflectedType.GetCustomAttribute(typeof(SaveFilesAtAttribute));
+                    attr = member.ReflectedType.GetCustomAttribute(typeof(ApprovedFolderAttribute));
                     if (attr == null)
                     {
-                        attr = member.ReflectedType.Assembly.GetCustomAttribute(typeof(SaveFilesAtAttribute));
+                        attr = member.ReflectedType.Assembly.GetCustomAttribute(typeof(ApprovedFolderAttribute));
                     }
                 }
-                string subDir = ((attr is SaveFilesAtAttribute folder) ? folder.Path : string.Empty);
+                string subDir = ((attr is ApprovedFolderAttribute folder) ? folder.Path : string.Empty);
 
-                attr = member.GetCustomAttribute(typeof(UseAttribute));
+                attr = member.GetCustomAttribute(typeof(ReporterAttribute));
                 if (attr == null)
                 {
-                    attr = member.ReflectedType.GetCustomAttribute(typeof(UseAttribute));
+                    attr = member.ReflectedType.GetCustomAttribute(typeof(ReporterAttribute));
                     if (attr == null)
                     {
-                        attr = member.ReflectedType.Assembly.GetCustomAttribute(typeof(UseAttribute));
+                        attr = member.ReflectedType.Assembly.GetCustomAttribute(typeof(ReporterAttribute));
                     }
                 }
-                var reporter = (attr as UseAttribute);
+                var reporter = (attr as ReporterAttribute);
 
                 if (string.IsNullOrEmpty(sourceFile))
                 {
-                    Debug.WriteLine($"The source file was not set.");
-                    Console.WriteLine($"The source file was not set.");
+                    if (TryResolveSourceFilePath(member.ReflectedType.Name, out sourceFile) == false)
+                    {
+                        Debug.WriteLine($"DiffA | Could not resolove {member.ReflectedType.Name} source file.");
+                        Console.WriteLine($"The source file was not set.");
+                        Console.WriteLine($"proj: '{TestContext.ProjectDirectory}'");
+                    }
                 }
 
-                _context = context = new TestContext(member.Name, member.ReflectedType.Name, sourceFile, subDir, reporter);
+                var guid = (member.GetCustomAttribute(typeof(ApprovedNameAttribute)) as ApprovedNameAttribute);
+                string className = (guid == null ? member.ReflectedType.Name : string.Empty);
+                string testName = (guid == null ? member.Name : guid.Guid);
+
+                _context = context = new TestContext(testName, className, sourceFile, subDir, reporter);
                 return true;
             }
 
             context = TestContext.Empty;
             return false;
+        }
+
+        public bool TryResolveSourceFilePath(string className, out string testClassFileName)
+        {
+            testClassFileName = null;
+            if (Directory.Exists(TestContext.ProjectDirectory))
+            {
+                testClassFileName = (from file in Directory.EnumerateFiles(TestContext.ProjectDirectory, $"{className}*", SearchOption.AllDirectories)
+                                     where
+                                        file.StartsWith(Path.Combine(TestContext.ProjectDirectory, "bin"), StringComparison.OrdinalIgnoreCase) == false
+                                        &&
+                                        file.StartsWith(Path.Combine(TestContext.ProjectDirectory, "obj"), StringComparison.OrdinalIgnoreCase) == false
+                                     select file).FirstOrDefault();
+            }
+            else System.Diagnostics.Debug.WriteLine($"DiffA | Could not file the test-project at '{TestContext.ProjectDirectory}'.");
+
+            return string.IsNullOrEmpty(testClassFileName) == false;
         }
 
         #region Private Members

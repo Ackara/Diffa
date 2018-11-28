@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 namespace Acklann.Diffa.Tests
 {
     [TestClass]
-    [SaveFilesAt("ClassLvl")]
+    [ApprovedFolder("ClassLvl")]
     public class ContextFileResolverTestA
     {
+        private const string Id = "f9d0acb8-7f51-45e7-a56d-bcd768d69363";
+
         [TestMethod]
-        [SaveFilesAt("MethodLvl")]
+        [ApprovedFolder("MethodLvl")]
         public void Should_return_path_honoring_the_attribute_on_the_method()
         {
             // Arrange
@@ -40,9 +42,23 @@ namespace Acklann.Diffa.Tests
             result1.ShouldBe(expectedPath);
         }
 
+        [TestMethod, ApprovedName(Id)]
+        public void Should_return_path_honoring_the_tuid()
+        {
+            // Arrange
+            var sut = new ContextualFileResolver();
+            var expectedPath = Path.Combine(SampleFile.ProjectDirectory, nameof(Tests), "ClassLvl", $"{Id}.approved.txt");
+
+            // Act
+            var result1 = sut.GetApprovedFilePath(".txt");
+
+            // Assert
+            result1.ShouldBe(expectedPath);
+        }
+
         [DataTestMethod]
         [DataRow('a'), DataRow('b'), DataRow('c')]
-        [SaveFilesAt(nameof(DataTestMethodAttribute))]
+        [ApprovedFolder(nameof(DataTestMethodAttribute))]
         public void Should_return_path_honoring_the_parameters_on_the_method(char arg)
         {
             // Arrange
@@ -57,7 +73,7 @@ namespace Acklann.Diffa.Tests
         }
 
         [TestMethod]
-        [SaveFilesAt("Async")]
+        [ApprovedFolder("Async")]
         public async Task Should_return_path_to_async_test()
         {
             System.Diagnostics.Debug.WriteLine($"thread: '{Thread.CurrentThread.Name}'({Thread.CurrentThread.ManagedThreadId})");
@@ -100,5 +116,4 @@ namespace Acklann.Diffa.Tests
 
         private static string StaticFunc(ContextualFileResolver sut) => sut.GetApprovedFilePath(".txt");
     }
-
 }

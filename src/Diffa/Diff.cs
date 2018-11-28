@@ -4,6 +4,7 @@ using Acklann.Diffa.Resolution;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -19,16 +20,39 @@ namespace Acklann.Diffa
     {
         static Diff()
         {
-            foreach (string variable in new[] { "DISABLE_DIFFA_REPORTERS" })
-                try
+            try
+            {
+                _shouldReport = string.IsNullOrEmpty(Environment.GetEnvironmentVariable($"%DISABLE_DIFFA_REPORTERS%"));
+                
+                if (string.IsNullOrEmpty(TestContext.ProjectDirectory))
                 {
-                    if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable($"%{variable}%")) == false)
-                    {
-                        _shouldReport = false;
-                        break;
-                    }
+                    var assembly = Assembly.GetExecutingAssembly();
+                    System.Diagnostics.Debug.WriteLine(assembly.GetManifestResourceNames());
+                    Stream stream = assembly?.GetManifestResourceStream($"{nameof(Acklann)}.{nameof(Diffa)}.diffa-lut.config");
+
+                    if (stream != null)
+                        using (stream)
+                        using (var reader = new StreamReader(stream))
+                        {
+                            string line; string[] kv;
+
+                            while (!reader.EndOfStream)
+                            {
+                                line = reader.ReadLine();
+                                kv = (string.IsNullOrEmpty(line) ? null : line.Split('='));
+
+                                if (kv != null)
+                                    switch (kv[0])
+                                    {
+                                        case "directory":
+                                            TestContext.ProjectDirectory = (kv.Length >= 2 ? kv[1] : null);
+                                            break;
+                                    }
+                            }
+                        }
                 }
-                catch (System.Security.SecurityException) { }
+            }
+            catch { }
         }
 
         /// <summary>
@@ -55,7 +79,7 @@ namespace Acklann.Diffa
                 {
                     if (reporter == null)
                     {
-                        UseAttribute attribute = contextBuilder.Context.ReporterAttribute;
+                        ReporterAttribute attribute = contextBuilder.Context.ReporterAttribute;
                         if (attribute?.Reporter == null)
                             reporter = _reporterFactory.GetFirstAvailableReporter(true);
                         else

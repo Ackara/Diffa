@@ -46,7 +46,8 @@ namespace Acklann.Diffa.Resolution
         public string GetApprovedFilePath(string fileExtension, params object[] args)
         {
             TestContext context = _contextBuilder.CreateContext();
-            return Path.Combine(context.SourceDirectory, context.SubDirectory, $"{context.TestClassName}-{context.TestMethodName}{ToSuffix(args)}.approved{AppendDot(fileExtension)}");
+            string className = (string.IsNullOrEmpty(context.TestClassName) ? string.Empty : $"{context.TestClassName}-");
+            return Path.Combine(context.SourceDirectory, context.SubDirectory, $"{className}{context.TestMethodName}{ToSuffix(args)}.approved{AppendDot(fileExtension)}");
         }
 
         #region Private Members

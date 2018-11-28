@@ -9,7 +9,7 @@ namespace Acklann.Diffa.Tests
 {
     [TestClass]
     //[Use(typeof(DiffReporter))]
-    [SaveFilesAt(ApprovedResults)]
+    [ApprovedFolder(ApprovedResults)]
     public class DiffTest
     {
         private const string
@@ -58,14 +58,14 @@ namespace Acklann.Diffa.Tests
         }
 
         [TestMethod]
-        [Use(typeof(VisualStudioReporter))]
+        [Reporter(typeof(VisualStudioReporter))]
         public void Should_launch_reporter_attached_test_method()
         {
             Diff.Approve("If you see this it was reported directory from the test method.");
         }
 
         [TestMethod]
-        [Use(typeof(NullReporter))]
+        [Reporter(typeof(NullReporter))]
         public void Can_use_a_xsd_to_approve_a_xml_file()
         {
             var schemaFile = SampleFile.GetXmlschema().FullName;
@@ -108,6 +108,13 @@ namespace Acklann.Diffa.Tests
         {
             var sample = new string[] { "dog", "cat", "rat" };
             Diff.ApproveAll(sample);
+        }
+
+
+        //[TestMethod]
+        public void Lut()
+        {
+            Diff.Approve("abc");
         }
     }
 }

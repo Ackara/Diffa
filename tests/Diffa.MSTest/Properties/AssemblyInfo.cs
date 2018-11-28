@@ -1,1 +1,2 @@
-﻿[assembly: Acklann.Diffa.SaveFilesAt(nameof(Acklann.Diffa))]
+﻿[assembly: Acklann.Diffa.ApprovedFolder(nameof(Acklann.Diffa))]
+

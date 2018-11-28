@@ -3,7 +3,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <DiffaEmbedInfoOnBuild Condition="$(DiffaEmbedInfoOnBuild)==''">true</DiffaEmbedInfoOnBuild>
-    <DiffaProjectInfoFile>$(MSBuildProjectDirectory)\project-info.diffa.json</DiffaProjectInfoFile>
+    <DiffaProjectInfoFile>$(MSBuildProjectDirectory)\diffa-lut.config</DiffaProjectInfoFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +23,7 @@
   <Target Name="EmbedProjectInfo">
     <!--  -->
     <WriteLinesToFile File="$(DiffaProjectInfoFile)"
-                      Lines="{ &quot;directory&quot;: &quot;$(MSBuildProjectDirectory.Replace('\', '/'))&quot;, &quot;fileName&quot;: &quot;$(MSBuildProjectFile)&quot; }"
+                      Lines="directory=$(MSBuildProjectDirectory.Replace('\', '/'));fileName=$(MSBuildProjectFile);"
                       Overwrite="true"
                       Encoding="utf-8" />
 

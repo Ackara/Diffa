@@ -16,7 +16,7 @@ namespace Acklann.Diffa.Resolution
         /// <param name="sourceFile">The source file.</param>
         /// <param name="subDirectory">The sub directory.</param>
         /// <param name="reporter">The reporter.</param>
-        public TestContext(string methodName, string className, string sourceFile, string subDirectory, UseAttribute reporter)
+        public TestContext(string methodName, string className, string sourceFile, string subDirectory, ReporterAttribute reporter)
         {
             ReporterAttribute = reporter;
             TestClassName = className;
@@ -33,7 +33,7 @@ namespace Acklann.Diffa.Resolution
         /// <summary>
         /// The reporter attribute.
         /// </summary>
-        public readonly UseAttribute ReporterAttribute;
+        public readonly ReporterAttribute ReporterAttribute;
 
         /// <summary>
         /// The test class name.
@@ -54,6 +54,13 @@ namespace Acklann.Diffa.Resolution
         /// The source file directory.
         /// </summary>
         public readonly string SourceDirectory;
+
+        /// <summary>
+        /// The test-project full path.
+        /// </summary>
+        public static string ProjectDirectory { get; set; }
+
+        public static System.Reflection.Assembly TestAssembly { get; set; }
 
         internal bool IsNotInstaniated => string.IsNullOrEmpty(SourceDirectory);
     }
