@@ -5,7 +5,7 @@ Properties {
 }
 
 Task "Deploy" -alias "publish" -description "This task compiles, test then publishes the solution." `
--depends @("configure", "version", "msbuild", "test", "pack", "push-nuget", "tag");
+-depends @("configure", "version", "msbuild", "mstest", "pack", "push-nuget", "tag");
 
 # ===============
 
