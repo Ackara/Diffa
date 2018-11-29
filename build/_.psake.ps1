@@ -28,13 +28,11 @@ Properties {
 	$Branch = "";
 }
 
-Task "Default" -depends @("configure", "build", "test", "pack");
-
 #region ----- COMPILATION -----
 
 Task "Import-Dependencies" -alias "restore" -description "This task imports all build dependencies." -action {
 	#  Importing all required powershell modules.
-	foreach ($moduleId in @("Ncrement", "VSSetup", "Pester"))
+	foreach ($moduleId in $Packages)
 	{
 		$modulePath = "$ToolsDir/$moduleId/*/*.psd1";
 		if (-not (Test-Path $modulePath))
@@ -50,24 +48,11 @@ Task "Import-Dependencies" -alias "restore" -description "This task imports all 
     {
         New-NcrementManifest $ManifestJson -Author $([System.Environment]::UserName) | Save-NcrementManifest $ManifestJson;
     }
-
-    # Create the 'secrets.json' file
-    if (-not (Test-Path $SecretsJson))
-    {
-        $credentials = '{ "jdbcurl": "jdbc:mysql://{0}/{1}", "userStore": "server=;user=;password=;database=;", "database": "server=;user=;password=;database=;" }';
-        [string]::Format('{{ "nugetKey": null, "psGalleryKey": null, "local": {0}, "preview": {0} }}', $credentials) | Out-File $SecretsJson -Encoding utf8;
-    }
 }
 
 Task "Increment-VersionNumber" -alias "version" -description "This task increments the project's version numbers" `
 -depends @("restore") -action {
     $manifest = Get-NcrementManifest $ManifestJson;
-
-    $releaseNotes = Join-Path $RootDir "releaseNotes.txt";
-    if (Test-Path $releaseNotes)
-    {
-        $manifest.ReleaseNotes = Get-Content $releaseNotes | Out-String;
-    }
 
     $oldVersion = $manifest | Convert-NcrementVersionNumberToString;
 	$result = $manifest | Step-NcrementVersionNumber $Branch -Break:$Major -Feature:$Minor -Patch | Update-NcrementProjectFile "$RootDir/src" -Commit:$Commit;
@@ -80,31 +65,37 @@ Task "Increment-VersionNumber" -alias "version" -description "This task incremen
 	}
 }
 
-Task "Build-Solution" -alias "build" -description "This task compiles the solution." `
+Task "Build-Solution" -alias "msbuild" -description "This task compiles the solution." `
 -depends @("restore") -precondition { return (-not $SkipCompilation); } -action {
 	Write-Header "dotnet: msbuild";
 	Exec { &dotnet msbuild $((Get-Item "$RootDir/*.sln").FullName) "/p:Configuration=$Configuration" "/verbosity:minimal"; }
 }
 
-Task "Run-Tests" -alias "test" -description "This task invoke all tests within the 'tests' folder." `
+Task "Run-Tests" -alias "mstest" -description "This task invoke all mstest tests." `
 -depends @("restore") -action {
 	try
 	{
         # Running all MSTest assemblies.
         Push-Location $RootDir;
-		foreach ($testFile in (Get-ChildItem "$RootDir/tests/*/bin/$Configuration" -Recurse -Filter "*$SolutionName*Test*.dll"))
+		foreach ($testFile in (Get-ChildItem "$RootDir/tests/*/bin/$Configuration" -Recurse -Filter "*$SolutionName*Test.dll"))
 		{
 			Write-Header "dotnet: vstest '$($testFile.BaseName)'";
 			Exec { &dotnet vstest $testFile.FullName; }
 		}
+	}
+	finally { Pop-Location; }
+}
 
-		# Running all Pester scripts.
-		$testsFailed = 0;
-		foreach ($testFile in (Get-ChildItem "$RootDir/tests/*/" -Recurse -Filter "*tests.ps1" -ErrorAction Ignore))
+Task "Run-Pester" -alias "pester" -description "This task invokes all pester tests." `
+-depends @("restore") -action {
+	try
+	{
+        Push-Location $RootDir;
+
+		foreach ($testFile in (Get-ChildItem "$RootDir/tests/*/" -Recurse -Filter "*tests.ps1"))
 		{
 			Write-Header "Pester '$($testFile.BaseName)'";
 			$results = Invoke-Pester -Script $testFile.FullName -PassThru;
-			$testsFailed += $results.FailedCount;
             if ($results.FailedCount -gt 0) { throw "'$($testFile.BaseName)' failed '$($results.FailedCount)' test(s)."; }
 		}
 	}
@@ -145,24 +136,6 @@ Task "Run-Benchmarks" -alias "benchmark" -description "This task runs all projec
 		finally { Pop-Location; }
 	}
     else { Write-Host " no benchmarks found." -ForegroundColor Yellow; }
-}
-
-#endregion
-
-#region ----- DB Migration -----
-
-Task "Rebuild-FlywayLocalDb" -alias "rebuild-db" -description "This task rebuilds the local database using flyway." `
--depends @("restore") -action{
-	[string]$flyway = Get-Flyway;
-	$credential = Get-Secret "local";
-	Assert (-not [string]::IsNullOrEmpty($credential.database)) "A connection string for your local database was not provided.";
-
-	$db = [ConnectionInfo]::new($credential, $credential.database);
-	Write-Header "flyway: clean ($($db.ToFlywayUrl()))";
-	Exec { &$flyway clean $db.ToFlywayUrl() $db.ToFlyUser() $db.ToFlyPassword(); }
-	Write-Header "flyway: migrate ($($db.ToFlywayUrl()))";
-	Exec { &$flyway migrate $db.ToFlywayUrl() $db.ToFlyUser() $db.ToFlyPassword() $([ConnectionInfo]::ConvertToFlywayLocation($MigrationDirectory)); }
-	Exec { &$flyway info $db.ToFlywayUrl() $db.ToFlyUser() $db.ToFlyPassword() $([ConnectionInfo]::ConvertToFlywayLocation($MigrationDirectory)); }
 }
 
 #endregion
@@ -255,6 +228,7 @@ Task "Tag-Release" -alias "tag" -description "This task tags the last commit wit
     if ($Branch -ieq "master")
     {
         Exec { &git tag v$version | Out-Null; }
+        Exec { &git push "origin" | Out-Null; }
         Exec { &git push "origin" --tags | Out-Null; }
     }
     else

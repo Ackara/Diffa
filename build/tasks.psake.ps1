@@ -1,13 +1,16 @@
 # Project-Specific tasks.
 
+Properties {
+	$Packages = @("Ncrement", "VSSetup", "Pester");
+}
+
 Task "Deploy" -alias "publish" -description "This task compiles, test then publishes the solution." `
--depends @("configure", "version", "build", "test", "pack", "push-nuget", "tag");
+-depends @("configure", "version", "msbuild", "test", "pack", "push-nuget", "tag");
 
 # ===============
 
 Task "Configure-Project" -alias "configure" -description "This initializes the project." `
--depends @("restore") -action {
-}
+-depends @("restore");
 
 Task "Package-Solution" -alias "pack" -description "This task generates all deployment packages." `
 -depends @("restore") -action {
