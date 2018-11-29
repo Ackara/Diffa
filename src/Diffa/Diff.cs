@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-
+[assembly: System.CLSCompliant(true)]
 namespace Acklann.Diffa
 {
     /// <summary>
