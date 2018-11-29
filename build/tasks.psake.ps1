@@ -7,9 +7,6 @@ Task "Deploy" -alias "publish" -description "This task compiles, test then publi
 
 Task "Configure-Project" -alias "configure" -description "This initializes the project." `
 -depends @("restore") -action {
-    [string]$sln = Resolve-Path "$RootDir/*.sln";
-    Write-Header "dotnet restore";
-    Exec { &dotnet restore $sln; }
 }
 
 Task "Package-Solution" -alias "pack" -description "This task generates all deployment packages." `

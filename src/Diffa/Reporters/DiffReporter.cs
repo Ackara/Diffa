@@ -28,8 +28,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="DiffReporter"/> class.
         /// </summary>
-        /// <param name="shouldPause">if set to <c>true</c> the test will be paused until the application is closed.</param>
-        public DiffReporter(bool shouldPause) : base(_exePath, _args, shouldPause)
+        /// <param name="shouldInterrupt">if set to <c>true</c> the test will be paused until the application is closed.</param>
+        public DiffReporter(bool shouldInterrupt) : base(_exePath, _args, shouldInterrupt)
         {
         }
 

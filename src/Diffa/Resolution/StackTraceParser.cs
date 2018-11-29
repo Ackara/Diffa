@@ -10,10 +10,6 @@ namespace Acklann.Diffa.Resolution
 {
     internal class StackTraceParser : IContextBuilder
     {
-        static StackTraceParser()
-        {
-        }
-
         public StackTraceParser()
         {
             foreach (string typeName in KnownTestFramework.TestMethodAttributeNames)
@@ -43,11 +39,12 @@ namespace Acklann.Diffa.Resolution
                 caller = frame.GetMethod();
                 temp = frame.GetFileName();
                 sourceFile = (string.IsNullOrEmpty(temp) ? sourceFile : temp);
-                if (caller.ReflectedType.IsNested && !string.IsNullOrEmpty(temp)) asyncWrapper = caller.ReflectedType;
+                if (caller.ReflectedType.IsNested && caller.ReflectedType.Assembly.FullName != _coreLib) asyncWrapper = caller.ReflectedType;
+                
 #if DEBUG
-                System.Diagnostics.Debug.WriteLine($"{caller.ReflectedType.Name} => {caller.Name} | async:{caller.ReflectedType.IsNested}");
-                System.Diagnostics.Debug.WriteLine($"at '{temp}'");
-                System.Diagnostics.Debug.WriteLine("");
+                Debug.WriteLine($"{caller.ReflectedType.AssemblyQualifiedName}.{caller.ReflectedType.Name} => {caller.Name} | async:{caller.ReflectedType.IsNested}");
+                Debug.WriteLine($"at '{temp}'");
+                Debug.WriteLine("");
 #endif
                 if (TryParse(caller, sourceFile, out context)) return context;
             }
@@ -96,7 +93,7 @@ namespace Acklann.Diffa.Resolution
                 {
                     if (TryResolveSourceFilePath(member.ReflectedType.Name, out sourceFile) == false)
                     {
-                        Debug.WriteLine($"DiffA | Could not resolove {member.ReflectedType.Name} source file.");
+                        Console.WriteLine($"DiffA | Could not resolove {member.ReflectedType.Name} source file.");
                         Console.WriteLine($"The source file was not set.");
                         Console.WriteLine($"proj: '{TestContext.ProjectDirectory}'");
                     }
@@ -133,6 +130,7 @@ namespace Acklann.Diffa.Resolution
 
         #region Private Members
 
+        private static readonly string _coreLib = typeof(string).Assembly.FullName;
         private readonly Type _testMethodAttribute;
         private TestContext _context;
 

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace Acklann.Diffa.Tests
 {
     [TestClass]
-    //[Use(typeof(DiffReporter))]
     [ApprovedFolder(ApprovedResults)]
     public class DiffTest
     {
@@ -68,9 +67,9 @@ namespace Acklann.Diffa.Tests
         [Reporter(typeof(NullReporter))]
         public void Can_use_a_xsd_to_approve_a_xml_file()
         {
-            var schemaFile = SampleFile.GetXmlschema().FullName;
-            var sampleFile = SampleFile.GetXmlfile();
-            var invaildFile = SampleFile.GetInvalid_Xmlfile();
+            var schemaFile = Sample.GetXmlschema().FullName;
+            var sampleFile = Sample.GetXmlfile();
+            var invaildFile = Sample.GetInvalid_Xmlfile();
 
             Diff.ApproveXml(sampleFile.OpenRead(), schemaFile, Xmlns);
             Diff.ApproveXml(File.ReadAllText(sampleFile.FullName), schemaFile, Xmlns);
@@ -100,7 +99,7 @@ namespace Acklann.Diffa.Tests
             {
                 Age = 28,
                 Name = "Mary Jane"
-            }, SampleFile.GetXmlschema().FullName, Xmlns);
+            }, Sample.GetXmlschema().FullName, Xmlns);
         }
 
         [TestMethod]
@@ -108,13 +107,6 @@ namespace Acklann.Diffa.Tests
         {
             var sample = new string[] { "dog", "cat", "rat" };
             Diff.ApproveAll(sample);
-        }
-
-
-        //[TestMethod]
-        public void Lut()
-        {
-            Diff.Approve("abc");
         }
     }
 }

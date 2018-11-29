@@ -19,7 +19,7 @@ namespace Acklann.Diffa.Tests
         {
             // Arrange
             var sut = new ContextualFileResolver();
-            var expectedPath = Path.Combine(SampleFile.ProjectDirectory, nameof(Tests), "MethodLvl", $"{nameof(ContextFileResolverTestA)}-{nameof(Should_return_path_honoring_the_attribute_on_the_method)}[a,b].approved.txt");
+            var expectedPath = Path.Combine(Sample.ProjectDirectory, nameof(Tests), "MethodLvl", $"{nameof(ContextFileResolverTestA)}-{nameof(Should_return_path_honoring_the_attribute_on_the_method)}[a,b].approved.txt");
 
             // Act
             var result = sut.GetApprovedFilePath(".txt", 'a', 'b');
@@ -33,7 +33,7 @@ namespace Acklann.Diffa.Tests
         {
             // Arrange
             var sut = new ContextualFileResolver();
-            var expectedPath = Path.Combine(SampleFile.ProjectDirectory, nameof(Tests), "ClassLvl", $"{nameof(ContextFileResolverTestA)}-{nameof(Should_return_path_honoring_the_attribute_on_the_class)}[c,d].approved.txt");
+            var expectedPath = Path.Combine(Sample.ProjectDirectory, nameof(Tests), "ClassLvl", $"{nameof(ContextFileResolverTestA)}-{nameof(Should_return_path_honoring_the_attribute_on_the_class)}[c,d].approved.txt");
 
             // Act
             var result1 = sut.GetApprovedFilePath(".txt", 'c', 'd');
@@ -47,7 +47,7 @@ namespace Acklann.Diffa.Tests
         {
             // Arrange
             var sut = new ContextualFileResolver();
-            var expectedPath = Path.Combine(SampleFile.ProjectDirectory, nameof(Tests), "ClassLvl", $"{Id}.approved.txt");
+            var expectedPath = Path.Combine(Sample.ProjectDirectory, nameof(Tests), "ClassLvl", $"{Id}.approved.txt");
 
             // Act
             var result1 = sut.GetApprovedFilePath(".txt");
@@ -63,7 +63,7 @@ namespace Acklann.Diffa.Tests
         {
             // Arrange
             var sut = new ContextualFileResolver();
-            var expectedPath = Path.Combine(SampleFile.ProjectDirectory, nameof(Tests), nameof(DataTestMethodAttribute), $"{nameof(ContextFileResolverTestA)}-{nameof(Should_return_path_honoring_the_parameters_on_the_method)}[{arg}].approved.txt");
+            var expectedPath = Path.Combine(Sample.ProjectDirectory, nameof(Tests), nameof(DataTestMethodAttribute), $"{nameof(ContextFileResolverTestA)}-{nameof(Should_return_path_honoring_the_parameters_on_the_method)}[{arg}].approved.txt");
 
             // Act
             var result = sut.GetApprovedFilePath(".txt", arg);
@@ -80,7 +80,7 @@ namespace Acklann.Diffa.Tests
 
             // Arrange
             var sut = new ContextualFileResolver();
-            var expectedPath = Path.Combine(SampleFile.ProjectDirectory, nameof(Tests), "Async", $"{nameof(ContextFileResolverTestA)}-{nameof(Should_return_path_to_async_test)}.approved.txt");
+            var expectedPath = Path.Combine(Sample.ProjectDirectory, nameof(Tests), "Async", $"{nameof(ContextFileResolverTestA)}-{nameof(Should_return_path_to_async_test)}.approved.txt");
 
             // Act
             await Task.Delay(100);
@@ -89,31 +89,5 @@ namespace Acklann.Diffa.Tests
             // Assert
             result1.ShouldBe(expectedPath);
         }
-    }
-
-    [TestClass]
-    public class ContextFileResolverTestB
-    {
-        [TestMethod]
-        public void Should_return_path_honoring_the_attribute_on_the_assembly()
-        {
-            // Arrange
-            var sut = new ContextualFileResolver();
-            var expectedPath = Path.Combine(SampleFile.ProjectDirectory, nameof(Tests), nameof(Diffa), $"{nameof(ContextFileResolverTestB)}-{nameof(Should_return_path_honoring_the_attribute_on_the_assembly)}.approved.txt");
-
-            // Act
-            var result1 = sut.GetApprovedFilePath(".txt");
-            var result3 = StaticFunc(sut);
-            var result2 = localFunc();
-
-            // Assert
-            result1.ShouldBe(expectedPath);
-            result2.ShouldBe(expectedPath);
-            result2.ShouldBe(expectedPath);
-
-            string localFunc() => sut.GetApprovedFilePath(".txt");
-        }
-
-        private static string StaticFunc(ContextualFileResolver sut) => sut.GetApprovedFilePath(".txt");
     }
 }

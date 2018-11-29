@@ -13,7 +13,7 @@ namespace Acklann.Diffa.Reporters
         /// Initializes a new instance of the <see cref="ReporterAttribute"/> class.
         /// </summary>
         /// <param name="reporterType">Type of the reporter.</param>
-        public ReporterAttribute(Type reporterType) : this(reporterType, false)
+        public ReporterAttribute(Type reporterType) : this(reporterType, true)
         {
         }
 
@@ -21,11 +21,11 @@ namespace Acklann.Diffa.Reporters
         /// Initializes a new instance of the <see cref="ReporterAttribute"/> class.
         /// </summary>
         /// <param name="reporterType">Type of the reporter.</param>
-        /// <param name="doNotPauseIfTestFails">if set to <c>true</c> [do not pause if test fails].</param>
-        public ReporterAttribute(Type reporterType, bool doNotPauseIfTestFails)
+        /// <param name="interrupt">if set to <c>true</c> the test will pause until the reporter is closed.</param>
+        public ReporterAttribute(Type reporterType, bool interrupt)
         {
             Reporter = reporterType;
-            ShouldPause = doNotPauseIfTestFails == false;
+            ShouldInterrupt = interrupt;
         }
 
         /// <summary>
@@ -36,6 +36,6 @@ namespace Acklann.Diffa.Reporters
         /// <summary>
         /// Determines whether test execution should be pause when a reporter is launched.
         /// </summary>
-        public readonly bool ShouldPause;
+        public readonly bool ShouldInterrupt;
     }
 }

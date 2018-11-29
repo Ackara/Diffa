@@ -39,16 +39,6 @@ Solution:
             }
         }
 
-        public static string ReporterFailedToOpen(string reporterName, string executablePath, string args)
-        {
-            return $"Failed to open the {reporterName}; The following arguments were used filename:'{executablePath}' arguments:'{args}'";
-        }
-
-        public static string FileNotFound(string filename)
-        {
-            return string.Format("Could not find file '{0}'.", filename);
-        }
-
         public static string GetTestNotFoundMessage()
         {
             string supportedFrameworks = string.Join(", ", Resolution.KnownTestFramework.Names);

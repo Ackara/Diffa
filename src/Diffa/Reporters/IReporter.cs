@@ -18,6 +18,7 @@
         /// </summary>
         /// <param name="resultFilePath">The result file path.</param>
         /// <param name="approvedFilePath">The approved file path.</param>
+        /// <returns><c>true</c> if the process waited for the reporter to close; otherwise, <c>false</c></returns>
         bool Launch(string resultFilePath, string approvedFilePath);
     }
 }

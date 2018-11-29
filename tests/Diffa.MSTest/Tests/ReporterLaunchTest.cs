@@ -21,7 +21,7 @@ namespace Acklann.Diffa.Tests
             var fileA = Path.ChangeExtension(Path.GetTempFileName(), ".txt");
             File.WriteAllText(fileA, $"If you see this the \"{reporterType.Name}\" was launched successfully.");
 
-            var fileB = SampleFile.GetTextfile().FullName;
+            var fileB = Sample.GetTextfile().FullName;
             var reporter = (IReporter)Activator.CreateInstance(reporterType, args: false);
 
             if (reporter.CanLaunch())

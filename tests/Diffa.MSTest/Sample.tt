@@ -15,13 +15,13 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace <#= GetMSBuildProperty("//RootNamespace") #>
+namespace <#= Host.ResolveAssemblyReference("$(RootNamespace)") #>
 {
-	public static partial class SampleFile
+	public static partial class <#= Path.GetFileNameWithoutExtension(Host.TemplateFile) #>
 	{
 		public const string FOLDER_NAME = "<#= FolderName #>";
 
-		public static readonly string ProjectDirectory = "";
+		public static readonly string ProjectDirectory = @"<#= Host.ResolveAssemblyReference("$(ProjectDir)")#>";
 
 		public static string DirectoryName => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, FOLDER_NAME);
         

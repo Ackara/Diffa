@@ -34,8 +34,8 @@ namespace Acklann.Diffa.Reporters
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultEditorReporter"/> class.
         /// </summary>
-        /// <param name="shouldPause">if set to <c>true</c> the test will be paused until the application is closed.</param>
-        public DefaultEditorReporter(bool shouldPause) : base(_exePath, "{0}", false)
+        /// <param name="shouldInterrupt">if set to <c>true</c> the test will be paused until the application is closed.</param>
+        public DefaultEditorReporter(bool shouldInterrupt) : base(_exePath, "{0}", false)
         { }
 
         private static readonly string _exePath;

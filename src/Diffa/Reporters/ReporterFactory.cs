@@ -28,13 +28,13 @@ namespace Acklann.Diffa.Reporters
             }
         }
 
-        public IEnumerable<IReporter> GetReporters(bool shouldPause = true, Kind filter = Kind.None)
+        public IEnumerable<IReporter> GetReporters(bool shouldInterrupt = true, Kind filter = Kind.None)
         {
             foreach ((Type type, int rating, Kind kind) in _reporterTypes.OrderByDescending(x => x.Item2))
             {
                 if (filter != Kind.None && kind != filter) continue;
 
-                var reporter = (IReporter)Activator.CreateInstance(type, args: shouldPause);
+                var reporter = (IReporter)Activator.CreateInstance(type, args: shouldInterrupt);
                 if (reporter.CanLaunch())
                 {
                     yield return reporter;
@@ -42,10 +42,10 @@ namespace Acklann.Diffa.Reporters
             }
         }
 
-        public IReporter GetFirstAvailableReporter(bool shouldPause)
+        public IReporter GetFirstAvailableReporter(bool shouldInterrupt)
         {
             if (_firstReporter == null)
-                foreach (IReporter reporter in GetReporters())
+                foreach (IReporter reporter in GetReporters(shouldInterrupt))
                 {
                     _firstReporter = reporter;
                     break;

@@ -18,11 +18,13 @@ namespace Acklann.Diffa.Resolution
         /// <param name="reporter">The reporter.</param>
         public TestContext(string methodName, string className, string sourceFile, string subDirectory, ReporterAttribute reporter)
         {
+            if (string.IsNullOrEmpty(sourceFile)) throw new System.ArgumentNullException(nameof(sourceFile), $"Could not resolve {className} source file.");
+
             ReporterAttribute = reporter;
             TestClassName = className;
             TestMethodName = methodName;
             SubDirectory = subDirectory ?? string.Empty;
-            SourceDirectory = Path.GetDirectoryName(sourceFile ?? string.Empty);
+            SourceDirectory = Path.GetDirectoryName(sourceFile);
         }
 
         /// <summary>
@@ -59,8 +61,6 @@ namespace Acklann.Diffa.Resolution
         /// The test-project full path.
         /// </summary>
         public static string ProjectDirectory { get; set; }
-
-        public static System.Reflection.Assembly TestAssembly { get; set; }
 
         internal bool IsNotInstaniated => string.IsNullOrEmpty(SourceDirectory);
     }

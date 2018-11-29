@@ -4,12 +4,9 @@ using Acklann.Diffa.Resolution;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-
-[assembly: CLSCompliant(true)]
 
 namespace Acklann.Diffa
 {
@@ -22,41 +19,24 @@ namespace Acklann.Diffa
         {
             try
             {
-                _shouldReport = string.IsNullOrEmpty(Environment.GetEnvironmentVariable($"%DISABLE_DIFFA_REPORTERS%"));
-                
-                if (string.IsNullOrEmpty(TestContext.ProjectDirectory))
-                {
-                    var assembly = Assembly.GetExecutingAssembly();
-                    System.Diagnostics.Debug.WriteLine(assembly.GetManifestResourceNames());
-                    Stream stream = assembly?.GetManifestResourceStream($"{nameof(Acklann)}.{nameof(Diffa)}.diffa-lut.config");
+                string disable = Environment.GetEnvironmentVariable("%DISABLE_DIFFA_REPORTERS%", EnvironmentVariableTarget.Process | EnvironmentVariableTarget.User);
+                if (string.IsNullOrEmpty(disable))
+                    _shouldReport = true;
+                else
+                    bool.TryParse(disable, out _shouldReport);
 
-                    if (stream != null)
-                        using (stream)
-                        using (var reader = new StreamReader(stream))
-                        {
-                            string line; string[] kv;
-
-                            while (!reader.EndOfStream)
-                            {
-                                line = reader.ReadLine();
-                                kv = (string.IsNullOrEmpty(line) ? null : line.Split('='));
-
-                                if (kv != null)
-                                    switch (kv[0])
-                                    {
-                                        case "directory":
-                                            TestContext.ProjectDirectory = (kv.Length >= 2 ? kv[1] : null);
-                                            break;
-                                    }
-                            }
-                        }
-                }
+                foreach (string name in new[] { "%MSBuildProjectDirectory%", "%PROJECT_DIRECTORY%" })
+                    if (string.IsNullOrEmpty(TestContext.ProjectDirectory))
+                    {
+                        TestContext.ProjectDirectory = Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process | EnvironmentVariableTarget.User);
+                    }
+                    else break;
             }
             catch { }
         }
 
         /// <summary>
-        /// Assert that the serialized <paramref name="subject"/> is equal to it's approved file.
+        /// Assert that the serialized <paramref name="subject" /> is equal to it's approved file.
         /// </summary>
         /// <param name="approver">The approver.</param>
         /// <param name="subject">The subject.</param>
@@ -64,7 +44,7 @@ namespace Acklann.Diffa
         /// <param name="fileExtension">The file extension (with or without a dot).</param>
         /// <param name="reporter">The reporter.</param>
         /// <param name="fileResolver">The file resolver.</param>
-        ///
+        /// <exception cref="Acklann.Diffa.Exceptions.ResultNotApprovedException">The subject did not match the approved-file.</exception>
         public static void Approve(IApprover approver, object subject, object[] testParameters, string fileExtension = ".txt", IReporter reporter = default, IFileResolver fileResolver = default)
         {
             var contextBuilder = new StackTraceParser();
@@ -75,15 +55,15 @@ namespace Acklann.Diffa
 
             if (approver.Approve(subject, resultFile, approvedFile, out string reasonWhyItWasNotApproved) == false)
             {
-                if (_shouldReport ?? true)
+                if (_shouldReport)
                 {
                     if (reporter == null)
                     {
                         ReporterAttribute attribute = contextBuilder.Context.ReporterAttribute;
                         if (attribute?.Reporter == null)
-                            reporter = _reporterFactory.GetFirstAvailableReporter(true);
+                            reporter = _reporterFactory.GetFirstAvailableReporter(attribute.ShouldInterrupt);
                         else
-                            reporter = (IReporter)Activator.CreateInstance(attribute.Reporter, args: attribute.ShouldPause);
+                            reporter = (IReporter)Activator.CreateInstance(attribute.Reporter, args: attribute.ShouldInterrupt);
                     }
 
                     if (reporter.Launch(resultFile, approvedFile))
@@ -159,6 +139,7 @@ namespace Acklann.Diffa
         /// <param name="schemaFilePath">The schema file path.</param>
         /// <param name="targetNamespace">The target namespace.</param>
         /// <param name="args">The test parameters supplied by parameterized test.</param>
+        /// <exception cref="FileNotFoundException">Could not find XML-Schema (.xsd).</exception>
         public static void ApproveXml(object subject, string schemaFilePath, string targetNamespace, params object[] args)
         {
             if (File.Exists(schemaFilePath))
@@ -172,7 +153,7 @@ namespace Acklann.Diffa
                     Approve(new XmlApprover(schemaFilePath, targetNamespace), stream, args, ".xml");
                 }
             }
-            else throw new FileNotFoundException(ExceptionMessage.FileNotFound(schemaFilePath), schemaFilePath);
+            else throw new FileNotFoundException($"Could not find XML-Schema (.xsd) at '{schemaFilePath}'", schemaFilePath);
         }
 
         /// <summary>
@@ -182,13 +163,14 @@ namespace Acklann.Diffa
         /// <param name="schemaFilePath">The URI that specifies the schema to load.</param>
         /// <param name="targetNamespace">The schema targetNamespace property, or null to use the targetNamespace specified in the schema.</param>
         /// <param name="args">The test parameters supplied by parameterized test.</param>
+        /// <exception cref="FileNotFoundException">Could not find XML-Schema (.xsd).</exception>
         public static void ApproveXml(Stream xml, string schemaFilePath, string targetNamespace, params object[] args)
         {
             if (File.Exists(schemaFilePath))
             {
                 Approve(new XmlApprover(schemaFilePath, targetNamespace), xml, args, ".xml");
             }
-            else throw new FileNotFoundException(ExceptionMessage.FileNotFound(schemaFilePath), schemaFilePath);
+            else throw new FileNotFoundException($"Could not find XML-Schema (.xsd) at '{schemaFilePath}'.", schemaFilePath);
         }
 
         /// <summary>
@@ -198,13 +180,14 @@ namespace Acklann.Diffa
         /// <param name="schemaFilePath">The schema file path.</param>
         /// <param name="targetNamespace">The target namespace.</param>
         /// <param name="args">The test parameters supplied by parameterized test.</param>
+        /// <exception cref="FileNotFoundException">Could not find XML-Schema (.xsd).</exception>
         public static void ApproveXml(string xml, string schemaFilePath, string targetNamespace, params object[] args)
         {
             if (File.Exists(schemaFilePath))
             {
                 Approve(new XmlApprover(schemaFilePath, targetNamespace), new MemoryStream(Encoding.UTF8.GetBytes(xml)), args, ".xml");
             }
-            else throw new FileNotFoundException($"Could not find file '{schemaFilePath}'.", schemaFilePath);
+            else throw new FileNotFoundException($"Could not find XML-Schema (.xsd) at '{schemaFilePath}'.", schemaFilePath);
         }
 
         /// <summary>
@@ -219,9 +202,9 @@ namespace Acklann.Diffa
         }
 
         /// <summary>
-        /// Assert that the serialized <paramref name="subject"/> is equal to it's approved file.
+        /// Assert that the serialized <paramref name="subjects" /> is equal to it's approved file.
         /// </summary>
-        /// <param name="subject">The subject/test result.</param>
+        /// <param name="subjects">The subjects.</param>
         /// <param name="fileExtension">The file extension (with or without a dot).</param>
         /// <param name="args">The test parameters supplied by parameterized test.</param>
         public static void ApproveAll(IEnumerable<object> subjects, string fileExtension = ".txt", params object[] args)
@@ -238,7 +221,7 @@ namespace Acklann.Diffa
 
         #region Private Members
 
-        private static readonly bool? _shouldReport;
+        private static readonly bool _shouldReport;
         private static readonly ReporterFactory _reporterFactory = new ReporterFactory();
 
         #endregion Private Members

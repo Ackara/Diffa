@@ -23,8 +23,8 @@ namespace Acklann.Diffa.Reporters
         /// <summary>
         /// Initializes a new instance of the <see cref="VisualStudioReporter"/> class.
         /// </summary>
-        /// <param name="shouldPause">if set to <c>true</c> [should pause].</param>
-        public VisualStudioReporter(bool shouldPause) : base(GetExecutablePath(), "/diff \"{0}\" \"{1}\"", false)
+        /// <param name="shouldInterrupt">if set to <c>true</c> [should pause].</param>
+        public VisualStudioReporter(bool shouldInterrupt) : base(GetExecutablePath(), "/diff \"{0}\" \"{1}\"", false)
         {
         }
 

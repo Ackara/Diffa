@@ -14,11 +14,11 @@ namespace Acklann.Diffa.Reporters
         /// </summary>
         /// <param name="executablePath">The executable path.</param>
         /// <param name="argsFormat">The arguments format.</param>
-        /// <param name="shouldPause">if set to <c>true</c> [should pause].</param>
-        protected ReporterBase(string executablePath, string argsFormat, bool shouldPause)
+        /// <param name="shouldInterrupt">if set to <c>true</c> [should pause].</param>
+        protected ReporterBase(string executablePath, string argsFormat, bool shouldInterrupt)
         {
             _format = argsFormat;
-            _shouldPause = shouldPause;
+            _shouldInterrupt = shouldInterrupt;
             _executablePath = executablePath;
         }
 
@@ -38,7 +38,8 @@ namespace Acklann.Diffa.Reporters
         /// </summary>
         /// <param name="resultFilePath">The result file path.</param>
         /// <param name="approvedFilePath">The approved file path.</param>
-        /// <returns><c>true</c> if the application was launched (triggered an interrupt) <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if the process waited for the reporter to close; otherwise, <c>false</c></returns>
+        /// <exception cref="System.ArgumentException"></exception>
         public virtual bool Launch(string resultFilePath, string approvedFilePath)
         {
             using (var exe = new Process())
@@ -49,7 +50,7 @@ namespace Acklann.Diffa.Reporters
                 try
                 {
                     exe.Start();
-                    if (_shouldPause)
+                    if (_shouldInterrupt)
                     {
                         exe.WaitForExit();
                         return true;
@@ -57,7 +58,7 @@ namespace Acklann.Diffa.Reporters
                 }
                 catch (System.InvalidOperationException ex)
                 {
-                    throw new System.ArgumentException(Exceptions.ExceptionMessage.ReporterFailedToOpen(GetType().Name, _executablePath, exe.StartInfo.Arguments), ex);
+                    throw new System.ArgumentException($"Failed to open the {GetType().Name} using the following arguments; filename:'{_executablePath}' arguments:'{exe.StartInfo.Arguments}'", ex);
                 }
             }
 
@@ -75,7 +76,7 @@ namespace Acklann.Diffa.Reporters
         #region Private Members
 
         internal readonly string _format, _executablePath;
-        private readonly bool _shouldPause;
+        private readonly bool _shouldInterrupt;
 
         #endregion Private Members
     }
