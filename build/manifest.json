@@ -1,8 +1,8 @@
 ﻿{
     "Version":  {
-                    "Major":  0,
-                    "Minor":  2,
-                    "Patch":  3
+                    "Major":  1,
+                    "Minor":  0,
+                    "Patch":  0
                 },
     "Name":  "Diffa",
     "Author":  "Ackara",
@@ -13,7 +13,7 @@
     "Icon":  "https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png",
     "License":  "https://raw.githubusercontent.com/Ackara/Traneleon/master/license.txt",
     "Summary":  "Diffa is a **.netstandard** unit-test assertion library that allows you to verify your test results against approved files.",
-    "ReleaseNotes":  "version 0.2.0\r\n-------------\r\nFeatures:\r\n\t* Add ApproveJson method.\r\n\t* Add ApproveAll method.\r\n\r\nversion 0.1.0\r\n-------------\r\nFeatures:\r\n\t* Add generic diff reporter\r\n\t* Add generic file reporter\r\n\r\nversion 0.0.10\r\n--------------\r\nFeatures:\r\n\t* Compare any object\r\n\t* Compare two files\r\n\t* Supports Beyond compare 4\r\n\t* Supports Visual Studio diff tool\r\n",
+    "ReleaseNotes":  "version 1.0.1\r\n-------------\r\nBreaking:\r\n\t* Rename SaveFilesAtAttribute to ApprovedFolderAttribute\r\n\t* Rename UseAttribute to ReporterAttribute\r\n\r\nFeatures:\r\n\t* Add ApprovedName attribute.\r\n\r\nFixes:\r\n\t* Improved ability to work with live-unit-tests and async tests.\r\n\r\nversion 0.2.0\r\n-------------\r\nFeatures:\r\n\t* Add ApproveJson method.\r\n\t* Add ApproveAll method.\r\n\r\nversion 0.1.0\r\n-------------\r\nFeatures:\r\n\t* Add generic diff reporter\r\n\t* Add generic file reporter\r\n\r\nversion 0.0.10\r\n--------------\r\nFeatures:\r\n\t* Compare any object\r\n\t* Compare two files\r\n\t* Supports Beyond compare 4\r\n\t* Supports Visual Studio diff tool\r\n",
     "Tags":  "approval test unit-testing diff compare approvals verify testing",
     "Id":  "",
     "Description":  "",

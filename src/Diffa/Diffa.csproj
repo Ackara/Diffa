@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Acklann.Diffa</AssemblyName>
@@ -10,8 +10,8 @@
     <Authors>Ackara</Authors>
     <Company>Ackara</Company>
     <Copyright>MIT License</Copyright>
-    <PackageVersion>0.2.3</PackageVersion>
-    <AssemblyVersion>0.2.3</AssemblyVersion>
+    <PackageVersion>1.0.0</PackageVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
     <PackageTags>approval test unit-testing diff compare approvals verify testing</PackageTags>
     <RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Ackara/Diffa/</PackageProjectUrl>
@@ -32,7 +32,19 @@ public class UnitTests
       => Diff.Approve("This is my test results.");
 
       ]]></Description>
-    <PackageReleaseNotes>version 0.2.0
+    <PackageReleaseNotes>version 1.0.1
+-------------
+Breaking:
+	* Rename SaveFilesAtAttribute to ApprovedFolderAttribute
+	* Rename UseAttribute to ReporterAttribute
+
+Features:
+	* Add ApprovedName attribute.
+
+Fixes:
+	* Improved ability to work with live-unit-tests and async tests.
+
+version 0.2.0
 -------------
 Features:
 	* Add ApproveJson method.
