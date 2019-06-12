@@ -12,14 +12,14 @@ Diffa is a unit-test assertion library that allows you to verify your test resul
 ```c#
 [TestClass]
 [Reporter(typeof(DiffReporter))]
-[ApprovedFolder("approved-results/")] /* opitonal */
+[ApprovedFolder("approved-results/")] /* optional */
 public class UnitTests
 {
     [TestMethod]
-    [ApprovedName("9e9516c4-3ed6-449d-b679-cbc858067c6f")] /* opitonal */
-    public void Ensure_results_is_well_formed()
+    [ApprovedName("9e9516c4-3ed6-449d-b679-cbc858067c6f")] /* optional */
+    public void Ensure_results_are_well_formed()
     {
-        Diffa.Approve("This is my test results.");
+        Diffa.Approve("These are my test results.");
     }
 }
 ```
