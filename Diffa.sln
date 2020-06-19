@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2019
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diffa", "src\Diffa\Diffa.csproj", "{A04D15F0-FE95-4910-B6C9-0E25EEBDB6D4}"
 EndProject
@@ -10,13 +10,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".misc", ".misc", "{9A05F26A-7C6F-4C7E-8AB3-BE219E0D85E1}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		changelog.md = changelog.md
 		README.md = README.md
-		releaseNotes.txt = releaseNotes.txt
 	EndProjectSection
 EndProject
 Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "build", "build\build.pssproj", "{B7FE2AEA-9859-46F6-BBE0-CC933FF05FB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diffa.XUnit", "tests\Diffa.XUnit\Diffa.XUnit.csproj", "{11A1A26E-EF10-4733-9691-6E06F1209E38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diffa.XUnit", "tests\Diffa.XUnit\Diffa.XUnit.csproj", "{11A1A26E-EF10-4733-9691-6E06F1209E38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,7 +6,7 @@ namespace Acklann.Diffa
     public class Startup
     {
         [AssemblyInitialize]
-        public static void Initialize(TestContext context)
+        public static void Initialize(TestContext _)
         {
             Resolution.TestContext.ProjectDirectory = Sample.ProjectDirectory;
         }

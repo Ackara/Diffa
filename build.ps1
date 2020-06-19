@@ -78,8 +78,8 @@ else
 		"SolutionFolder"=$PSScriptRoot;
 		"SecretsFilePath"=$SecretsFilePath;
 		"EnvironmentName"=$environmentName;
-		"InPreview"=$Production.IsPresent;
 		"InProduction"=$Production.IsPresent;
+		"InPreview"=$Preview.IsPresent;
 		"Interactive"=(-not $NonInteractive.IsPresent);
 	}
 	if (-not $psake.build_success) { exit 1; }

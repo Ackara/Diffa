@@ -17,6 +17,7 @@
     <Copyright>Copyright 2020 Ackara, All Rights Reserved.</Copyright>
     <PackageTags>approval test unit-testing diff compare approvals verify testing</PackageTags>
     <RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/Ackara/Diffa</PackageProjectUrl>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageIcon>icon.png</PackageIcon>

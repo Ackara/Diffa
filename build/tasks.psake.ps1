@@ -50,14 +50,6 @@ Task "Restore-Dependencies" -alias "restore" -description "This task generate an
 		New-NcrementManifest | ConvertTo-Json | Out-File $ManifestFilePath -Encoding utf8;
 		Write-Host "  * added 'build/$(Split-Path $ManifestFilePath -Leaf)' to the solution.";
 	}
-
-	# Generating a secrets file template
-	# ==================================================
-	if (-not (Test-Path $SecretsFilePath))
-	{
-		"{}" | Out-File $SecretsFilePath -Encoding utf8;
-		Write-Host "  * added '$(Split-Path $SecretsFilePath -Leaf)' to the solution.";
-	}
 }
 
 #region ----- PUBLISHING -----------------------------------------------
@@ -70,16 +62,26 @@ Task "Package-Solution" -alias "pack" -description "This task generates all depl
 
 	$proj = Join-Path $SolutionFolder "src/$SolutionName/*.*proj" | Get-Item;
 	Write-Separator "dotnet pack '$($proj.Basename)'";
-	Exec { &dotnet pack $proj.FullName --configuration $Configuration --output $ArtifactsFolder; }
+	Exec { &dotnet pack $proj.FullName --configuration $Configuration --output $ArtifactsFolder -p:"Version=$version" ; }
 }
 
 Task "Publish-NuGet-Packages" -alias "push-nuget" -description "This task publish all nuget packages to a nuget repository." `
 -precondition { return ($InProduction -or $InPreview ) -and (Test-Path $ArtifactsFolder -PathType Container) } `
--action { }
+-action {
+	$package = Join-Path $ArtifactsFolder "*.nupkg" | Get-Item;
+	Write-Separator "nuget push '$($package.Basename)'";
+	Exec { &dotnet nuget push $package.FullName --source "nuget.org"; }
+}
 
 Task "Add-GitReleaseTag" -alias "tag" -description "This task tags the lastest commit with the version number." `
 -precondition { return ($InProduction -or $InPreview ) } `
--depends @("restore") -action { }
+-depends @("restore") -action {
+	$version = $ManifestFilePath | Select-NcrementVersionNumber -Format "C";
+	Exec { &git add .; }
+	Exec { &git commit -m "Package version $version."; }
+	Exec { &git tag -a v$version -m "Version $version"; }
+}
+
 
 #endregion
 
@@ -138,7 +140,7 @@ Task "Run-Tests" -alias "test" -description "This task invoke all tests within t
 
 #endregion
 
-#region ----- FUNCTIONS ----------------------------------------------
+#region ----- FUNCTIONS ------------------------------------------------
 
 function Write-Value
 {
@@ -173,6 +175,31 @@ function Write-Separator([string]$Title = "", [int]$length = 70)
 		if ($header.Length -gt $length) { $header = $header.Substring(0, $length); }
 	}
 	Write-Host "`r`n$header`r`n" -ForegroundColor DarkGray;
+}
+
+function Get-Secret
+{
+	Param(
+		[Alias('e', "env")]
+		[Parameter(Mandatory)]
+		[string]$EnvironmentVariable,
+
+		[Alias('p', 'j', 'path')]
+		[Parameter(Mandatory)]
+		[string]$JPath
+	)
+
+	$result = [Environment]::ExpandEnvironmentVariables("%$EnvironmentVariable%");
+	if ([string]::IsNullOrEmpty($result) -or ($result -eq "%$EnvironmentVariable%"))
+	{
+		$secrets = Get-Content $SecretsFilePath | ConvertFrom-Json;
+		$properties = $JPath.Split(@('.', '/'));
+		foreach($prop in $properties)
+		{
+			$result = $secrets.$prop;
+		}
+	}
+	return $result;
 }
 
 #endregion
