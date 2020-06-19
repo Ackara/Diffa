@@ -1,9 +1,8 @@
 ﻿{
-  "version":
-  {
+  "version": {
     "major": 1,
     "minor": 1,
-    "patch": 0
+    "patch": 1
   },
   "name": "Diffa",
   "author": "Ackara",
@@ -14,8 +13,7 @@
   "releaseNotes": "https://github.com/{company}/{name}/blob/master/changelog.md",
   "license": "license.txt",
   "icon": "icon.png",
-  "branchVersionMap":
-  {
+  "branchVersionMap": {
     "production": "C",
     "default": "x.y.z-rc"
   }
