@@ -77,8 +77,14 @@ Task "Add-GitReleaseTag" -alias "tag" -description "This task tags the lastest c
 -precondition { return ($InProduction -or $InPreview ) } `
 -depends @("restore") -action {
 	$version = $ManifestFilePath | Select-NcrementVersionNumber -Format "C";
-	Exec { &git add .; }
-	Exec { &git commit -m "Package version $version."; }
+
+	$status = (&git status | Out-String);
+	if ($status -notmatch 'nothing to commit')
+	{
+		Exec { &git add .; }
+		Exec { &git commit -m "Package version $version."; }
+	}
+
 	Exec { &git tag -a v$version -m "Version $version"; }
 }
 
