@@ -87,7 +87,17 @@ namespace Acklann.Diffa
         /// <param name="subject">The subject/test result.</param>
         /// <param name="fileExtension">The file extension (with or without a dot).</param>
         /// <param name="args">The test parameters supplied by parameterized test.</param>
-        public static void Approve(object subject, string fileExtension = ".txt", Encoding encoding = default, params object[] args)
+        public static void Approve(object subject, string fileExtension = ".txt", params object[] args)
+            => Approve(subject, default, fileExtension, args);
+
+        /// <summary>
+        /// Assert that the serialized <paramref name="subject" /> is equal to it's approved file.
+        /// </summary>
+        /// <param name="subject">The subject/test result.</param>
+        /// <param name="encoding">The result file text encoding.</param>
+        /// <param name="fileExtension">The file extension (with or without a dot).</param>
+        /// <param name="args">The test parameters supplied by parameterized test.</param>
+        public static void Approve(object subject, Encoding encoding, string fileExtension = ".txt", params object[] args)
         {
             Approve(new BinaryApprover(), (encoding ?? Encoding.Default).GetBytes(subject.ToString()), args, fileExtension);
         }
