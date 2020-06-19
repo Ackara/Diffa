@@ -86,6 +86,7 @@ Task "Add-GitReleaseTag" -alias "tag" -description "This task tags the lastest c
 	}
 
 	Exec { &git tag -a v$version -m "Version $version"; }
+	Write-Host "  * Tagged latest commit '$version'";
 }
 
 
