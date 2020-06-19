@@ -32,11 +32,4 @@
       "arguments": "-ExecutionPolicy Bypass -NonInteractive -File build.ps1 configure"
     }
   }
-
-
-
-
-
-
-
 }

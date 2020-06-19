@@ -7,7 +7,9 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+
 [assembly: System.CLSCompliant(true)]
+
 namespace Acklann.Diffa
 {
     /// <summary>
@@ -85,9 +87,9 @@ namespace Acklann.Diffa
         /// <param name="subject">The subject/test result.</param>
         /// <param name="fileExtension">The file extension (with or without a dot).</param>
         /// <param name="args">The test parameters supplied by parameterized test.</param>
-        public static void Approve(object subject, string fileExtension = ".txt", params object[] args)
+        public static void Approve(object subject, string fileExtension = ".txt", Encoding encoding = default, params object[] args)
         {
-            Approve(new BinaryApprover(), Encoding.Default.GetBytes(subject.ToString()), args, fileExtension);
+            Approve(new BinaryApprover(), (encoding ?? Encoding.Default).GetBytes(subject.ToString()), args, fileExtension);
         }
 
         /// <summary>
@@ -196,9 +198,9 @@ namespace Acklann.Diffa
         /// <param name="subject">The subject/test result.</param>
         /// <param name="fileExtension">The file extension (with or without a dot).</param>
         /// <param name="args">The test parameters supplied by parameterized test.</param>
-        public static void ShouldMatchApprovedFile(this object subject, string fileExtension = ".txt", params object[] args)
+        public static void ShouldMatchApprovedFile(this object subject, string fileExtension = ".txt", Encoding encoding = default, params object[] args)
         {
-            Approve(new BinaryApprover(), Encoding.Default.GetBytes(subject.ToString()), args, fileExtension);
+            Approve(new BinaryApprover(), (encoding ?? Encoding.Default).GetBytes(subject.ToString()), args, fileExtension);
         }
 
         /// <summary>

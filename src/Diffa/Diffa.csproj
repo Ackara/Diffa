@@ -5,19 +5,23 @@
     <RootNamespace>Acklann.Diffa</RootNamespace>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
+
   <PropertyGroup>
     <Title>Diffa</Title>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <AssemblyFileVersion>1.1.0</AssemblyFileVersion>
+
     <Authors>Ackara</Authors>
     <Company>Ackara</Company>
-    <Copyright>MIT License</Copyright>
-    <PackageVersion>1.0.3</PackageVersion>
-    <AssemblyVersion>1.0.3</AssemblyVersion>
+    <Copyright>Copyright 2020 Ackara, All Rights Reserved.</Copyright>
     <PackageTags>approval test unit-testing diff compare approvals verify testing</PackageTags>
     <RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/Ackara/Diffa/</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/Ackara/Diffa/master/art/icon.png</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/Ackara/Traneleon/master/license.txt</PackageLicenseUrl>
-    <Description><![CDATA[
+    <PackageProjectUrl>https://github.com/Ackara/Diffa</PackageProjectUrl>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <Description>
+      <![CDATA[
 Diffa is a .netstandard unit-test assertion library that allows you to verify your test results against approved files. Inspired by [ApprovalTests](https://github.com/approvals/ApprovalTests.Net), Diffa will also automatically launch your favorite diff tool when an assertion fails so you can compare approve the results.
 
 ## Basic Use
@@ -28,57 +32,36 @@ Diffa is a .netstandard unit-test assertion library that allows you to verify yo
 public class UnitTests
 
     [TestMethod]
-    public void Ensure_results_is_well_formed() 
+    public void Ensure_results_is_well_formed()
       => Diff.Approve("This is my test results.");
 
-      ]]></Description>
-    <PackageReleaseNotes>version 1.0.1
--------------
-Breaking:
-	* Rename SaveFilesAtAttribute to ApprovedFolderAttribute
-	* Rename UseAttribute to ReporterAttribute
-
-Features:
-	* Add ApprovedName attribute.
-
-Fixes:
-	* Improved ability to work with live-unit-tests and async tests.
-
-version 0.2.0
--------------
-Features:
-	* Add ApproveJson method.
-	* Add ApproveAll method.
-
-version 0.1.0
--------------
-Features:
-	* Add generic diff reporter
-	* Add generic file reporter
-
-version 0.0.10
---------------
-Features:
-	* Compare any object
-	* Compare two files
-	* Supports Beyond compare 4
-	* Supports Visual Studio diff tool
-</PackageReleaseNotes>
+      ]]>
+    </Description>
+    <PackageReleaseNotes>https://github.com/Ackara/Diffa/blob/master/changelog.md</PackageReleaseNotes>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="..\..\README.md">
-      <Visible>false</Visible>
-      <PackagePath>
-      </PackagePath>
-    </Content>
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
+
+  <ItemGroup Label="NuGet">
+    <Content Include="..\..\README.md">
+      <PackagePath>README.md</PackagePath>
+      <Visible>false</Visible>
+    </Content>
+
+    <Content Include="..\..\license.txt">
+      <PackagePath>license.txt</PackagePath>
+      <Visible>false</Visible>
+    </Content>
+
+    <Content Include="..\..\art\icon.png">
+      <PackagePath>icon.png</PackagePath>
+      <Visible>false</Visible>
+    </Content>
   </ItemGroup>
 </Project>

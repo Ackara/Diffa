@@ -1,11 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Acklann.Diffa.MSTest</AssemblyName>
     <RootNamespace>Acklann.Diffa</RootNamespace>
-  </PropertyGroup>
+  
+<Title>Diffa</Title>
+<Version>1.1.0</Version>
+<AssemblyVersion>1.1.0</AssemblyVersion>
+<AssemblyFileVersion>1.1.0</AssemblyFileVersion>
+<PackageIcon>icon.png</PackageIcon>
+<RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
+<PackageProjectUrl>https://github.com/Ackara/Diffa</PackageProjectUrl>
+<PackageReleaseNotes>https://github.com/Ackara/Diffa/blob/master/changelog.md</PackageReleaseNotes>
+<Company>Ackara</Company>
+<Copyright>Copyright 2020 Ackara, All Rights Reserved.</Copyright>
+<PackageLicenseFile>license.txt</PackageLicenseFile>
+</PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <Optimize>false</Optimize>
@@ -62,4 +74,6 @@
       <DependentUpon>Sample.tt</DependentUpon>
     </Compile>
   </ItemGroup>
+
+
 </Project>

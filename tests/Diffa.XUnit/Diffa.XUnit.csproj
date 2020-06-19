@@ -8,7 +8,19 @@
     <AssemblyName>Acklann.Diffa.XUnit</AssemblyName>
 
     <RootNamespace>Acklann.Diffa</RootNamespace>
-  </PropertyGroup>
+  
+<Title>Diffa</Title>
+<Version>1.1.0</Version>
+<AssemblyVersion>1.1.0</AssemblyVersion>
+<AssemblyFileVersion>1.1.0</AssemblyFileVersion>
+<PackageIcon>icon.png</PackageIcon>
+<RepositoryUrl>https://github.com/Ackara/Diffa.git</RepositoryUrl>
+<PackageProjectUrl>https://github.com/Ackara/Diffa</PackageProjectUrl>
+<PackageReleaseNotes>https://github.com/Ackara/Diffa/blob/master/changelog.md</PackageReleaseNotes>
+<Company>Ackara</Company>
+<Copyright>Copyright 2020 Ackara, All Rights Reserved.</Copyright>
+<PackageLicenseFile>license.txt</PackageLicenseFile>
+</PropertyGroup>
 
   <ItemGroup>
     <None Remove="Tests\XUnitCompatabilityTest-Can_be_used_with_xunit.approved.txt" />
@@ -23,5 +35,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Diffa\Diffa.csproj" />
   </ItemGroup>
+
+
 
 </Project>

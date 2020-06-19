@@ -40,14 +40,14 @@ namespace Acklann.Diffa.Tests
         public async Task Can_be_used_with_async_tests()
         {
             await Task.Run(() => { System.Diagnostics.Debug.WriteLine("do work!"); });
-            Diff.Approve("I can handle async methods.", ".txt", ApprovedResults);
+            Diff.Approve("I can handle async methods.", ".txt", default, ApprovedResults);
         }
 
         [DataTestMethod]
         [DataRow('a'), DataRow('b')]
         public void Can_be_used_with_data_driven_tests(char arg)
         {
-            Diff.Approve($"This is a data-driven test ({arg})", ".txt", arg);
+            Diff.Approve($"This is a data-driven test ({arg})", ".txt", default, arg);
         }
 
         [TestMethod]

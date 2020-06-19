@@ -3,7 +3,7 @@
 namespace Acklann.Diffa
 {
     [TestClass]
-    public class Booter
+    public class Startup
     {
         [AssemblyInitialize]
         public static void Initialize(TestContext context)
