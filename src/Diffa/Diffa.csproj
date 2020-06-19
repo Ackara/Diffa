@@ -8,9 +8,9 @@
 
   <PropertyGroup>
     <Title>Diffa</Title>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0</AssemblyVersion>
-    <AssemblyFileVersion>1.1.0</AssemblyFileVersion>
+    <Version>1.1.1</Version>
+    <AssemblyVersion>1.1.1</AssemblyVersion>
+    <AssemblyFileVersion>1.1.1</AssemblyFileVersion>
 
     <Authors>Ackara</Authors>
     <Company>Ackara</Company>
